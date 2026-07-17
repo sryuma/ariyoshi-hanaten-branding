@@ -10,24 +10,24 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Shippori+Mincho+B1:wght@200;300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
+    --outer: #E8E3D3;
+    --paper: #FCFAF5;
+    --paper-shade: #F5F1E5;
+    --warm: #F8F2E4;
     --ink: #2A2622;
     --ink-soft: #57524A;
     --sub: #8F8578;
-    --line: #E5DFD1;
-    --line-soft: #EFEADB;
-    --base: #FCFAF5;
-    --paper: #F5F1E5;
-    --warm: #F8F2E4;
+    --line: #D5CDB8;
+    --line-soft: #E5DFD1;
     --moss: #4A5A32;
     --moss-deep: #2F3A1E;
     --moss-soft: #B8C0A5;
     --red: #6E1A20;
-    --red-soft: #9B3A40;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   body {
-    background: var(--base);
+    background: var(--outer);
     color: var(--ink);
     font-family: "Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", serif;
     font-weight: 300;
@@ -35,203 +35,251 @@
     letter-spacing: 0.14em;
     -webkit-font-smoothing: antialiased;
     text-rendering: geometricPrecision;
+    padding: 40px 20px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='400' height='400' filter='url(%23n)' opacity='0.10'/></svg>");
   }
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='400' height='400' filter='url(%23n)' opacity='0.06'/></svg>");
-    pointer-events: none;
-    z-index: 1;
-    mix-blend-mode: multiply;
-  }
-  body > * { position: relative; z-index: 2; }
   a { color: inherit; text-decoration: none; }
   .en { font-family: "Cormorant Garamond", serif; font-style: italic; }
 
-  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 1.8s cubic-bezier(.2,.6,.2,1), transform 1.8s cubic-bezier(.2,.6,.2,1); }
+  .canvas {
+    max-width: 620px;
+    margin: 0 auto;
+    background: var(--paper);
+    position: relative;
+    box-shadow:
+      0 2px 8px rgba(30,20,10,0.04),
+      0 20px 60px rgba(30,20,10,0.08),
+      0 60px 160px rgba(30,20,10,0.12);
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/></filter><rect width='400' height='400' filter='url(%23n)' opacity='0.06'/></svg>");
+    padding: 60px 60px 80px;
+    overflow: hidden;
+  }
+  .canvas::before {
+    content: "";
+    position: absolute;
+    top: 240px; bottom: 300px;
+    left: 50%;
+    width: 1px;
+    background: var(--line);
+    opacity: 0.4;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 1.8s cubic-bezier(.2,.6,.2,1), transform 1.8s cubic-bezier(.2,.6,.2,1); }
   .reveal.in { opacity: 1; transform: translateY(0); }
   .reveal-slow { transition-duration: 2.6s; }
 
-  header {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    padding: 28px 40px;
+  .head {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    z-index: 100;
-    mix-blend-mode: multiply;
+    align-items: baseline;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--line-soft);
+    margin-bottom: 80px;
+    position: relative;
+    z-index: 2;
   }
-  .logo { font-size: 11px; letter-spacing: 0.5em; font-weight: 400; color: var(--ink); }
+  .logo { font-size: 10px; letter-spacing: 0.5em; font-weight: 400; }
   .logo .en {
     display: block;
-    font-size: 10px;
-    letter-spacing: 0.35em;
+    font-size: 9px;
+    letter-spacing: 0.4em;
     color: var(--red);
     margin-bottom: 4px;
     text-transform: uppercase;
     font-weight: 400;
   }
-  .chapter {
-    font-family: "Cormorant Garamond", serif;
-    font-style: italic;
-    font-size: 11px;
-    letter-spacing: 0.5em;
-    color: var(--red);
-    text-transform: uppercase;
-  }
-
-  /* Hero — 2分割：右に代表者、左に余白と名前 */
-  .hero {
-    min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1.1fr 1fr;
-    align-items: stretch;
-    padding-top: 80px;
-  }
-  .hero-left {
-    padding: 120px 60px 80px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    position: relative;
-  }
-  .hero-left-inner { max-width: 460px; }
-  .hero-en {
-    font-family: "Cormorant Garamond", serif;
-    font-style: italic;
-    font-size: 11px;
-    letter-spacing: 0.6em;
-    color: var(--red);
-    text-transform: uppercase;
-    margin-bottom: 48px;
-    opacity: 0;
-    transition: opacity 2s ease 0.6s;
-  }
-  .hero-en.in { opacity: 1; }
-  .hero-jp {
-    font-size: clamp(32px, 5vw, 56px);
-    font-weight: 200;
-    letter-spacing: 0.25em;
-    line-height: 1.9;
-    color: var(--ink);
-    margin-bottom: 60px;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 2.4s ease 1.2s, transform 2.4s cubic-bezier(.2,.6,.2,1) 1.2s;
-  }
-  .hero-jp.in { opacity: 1; transform: translateY(0); }
-  .hero-sig {
-    padding-top: 32px;
-    border-top: 1px solid var(--line);
-    opacity: 0;
-    transition: opacity 2s ease 2s;
-  }
-  .hero-sig.in { opacity: 1; }
-  .hero-sig-name {
-    font-size: 16px;
-    letter-spacing: 0.5em;
-    color: var(--ink);
-    margin-bottom: 12px;
-  }
-  .hero-sig-en {
-    font-family: "Cormorant Garamond", serif;
-    font-style: italic;
-    font-size: 11px;
-    letter-spacing: 0.4em;
-    color: var(--sub);
-    text-transform: uppercase;
-  }
-  .hero-right {
-    position: relative;
-    overflow: hidden;
-    min-height: 480px;
-    background:
-      radial-gradient(ellipse at 40% 30%, rgba(255,255,255,0.08) 0%, transparent 55%),
-      radial-gradient(ellipse at 70% 80%, rgba(0,0,0,0.30) 0%, transparent 55%),
-      linear-gradient(160deg, #4A5A32 0%, #2F3A1E 100%);
-  }
-  .hero-right::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/></filter><rect width='400' height='400' filter='url(%23n)' opacity='0.4'/></svg>");
-    mix-blend-mode: multiply;
-  }
-  .hero-right .stamp {
-    position: absolute;
-    bottom: 32px;
-    right: 32px;
+  .chapter-tag {
     font-family: "Cormorant Garamond", serif;
     font-style: italic;
     font-size: 10px;
     letter-spacing: 0.5em;
-    color: rgba(255,255,255,0.55);
-    text-transform: uppercase;
-  }
-  .hero-right .letter-mark {
-    position: absolute;
-    top: 40px;
-    left: 40px;
-    font-family: "Cormorant Garamond", serif;
-    font-style: italic;
-    font-size: 120px;
-    color: rgba(255,255,255,0.10);
-    line-height: 1;
-  }
-
-  section { padding: 220px 40px; position: relative; }
-  .wrap { max-width: 960px; margin: 0 auto; }
-  .wrap-narrow { max-width: 620px; margin: 0 auto; }
-
-  .sec-title { text-align: center; margin-bottom: 100px; }
-  .sec-title .en {
-    display: block;
-    font-size: 11px;
-    letter-spacing: 0.5em;
     color: var(--red);
     text-transform: uppercase;
-    margin-bottom: 20px;
   }
-  .sec-title h2 {
-    font-size: clamp(22px, 2.6vw, 30px);
+
+  /* Hero — 代表者ビジュアル大＋名前 */
+  .hero {
+    position: relative;
+    margin-bottom: 100px;
+    z-index: 2;
+  }
+  .portrait {
+    aspect-ratio: 4 / 5;
+    background:
+      radial-gradient(ellipse at 40% 30%, rgba(255,255,255,0.08) 0%, transparent 55%),
+      radial-gradient(ellipse at 70% 80%, rgba(0,0,0,0.30) 0%, transparent 55%),
+      linear-gradient(160deg, #4A5A32 0%, #2F3A1E 100%);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 40px;
+    opacity: 0;
+    transform: scale(1.02);
+    transition: opacity 2.4s ease 0.3s, transform 2.4s cubic-bezier(.2,.6,.2,1) 0.3s;
+  }
+  .portrait.in { opacity: 1; transform: scale(1); }
+  .portrait::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/></filter><rect width='400' height='400' filter='url(%23n)' opacity='0.4'/></svg>");
+    mix-blend-mode: multiply;
+    pointer-events: none;
+  }
+  .portrait .stamp {
+    position: absolute;
+    bottom: 20px;
+    right: 24px;
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 9px;
+    letter-spacing: 0.4em;
+    color: rgba(255,255,255,0.55);
+    text-transform: uppercase;
+    z-index: 2;
+  }
+  .portrait .letter {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 90px;
+    color: rgba(255,255,255,0.12);
+    line-height: 1;
+    z-index: 2;
+  }
+  .hero-text {
+    text-align: center;
+    margin-top: 40px;
+  }
+  .hero-en {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 10px;
+    letter-spacing: 0.55em;
+    color: var(--red);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    opacity: 0;
+    transition: opacity 2s ease 1.2s;
+  }
+  .hero-en.in { opacity: 1; }
+  .hero-jp {
+    font-size: clamp(28px, 5.5vw, 38px);
+    font-weight: 200;
+    letter-spacing: 0.28em;
+    line-height: 2;
+    color: var(--ink);
+    margin-bottom: 40px;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 2.4s ease 1.8s, transform 2.4s cubic-bezier(.2,.6,.2,1) 1.8s;
+  }
+  .hero-jp.in { opacity: 1; transform: translateY(0); }
+  .hero-sig {
+    padding-top: 28px;
+    border-top: 1px solid var(--line-soft);
+    max-width: 240px;
+    margin: 0 auto;
+    opacity: 0;
+    transition: opacity 2s ease 2.6s;
+  }
+  .hero-sig.in { opacity: 1; }
+  .hero-sig-name {
+    font-size: 14px;
+    letter-spacing: 0.5em;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .hero-sig-role {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    color: var(--sub);
+    text-transform: uppercase;
+  }
+
+  /* 章立て */
+  .chapter-mark {
+    text-align: center;
+    margin: 40px 0 60px;
+    position: relative;
+    z-index: 3;
+  }
+  .chapter-mark .num {
+    display: inline-block;
+    background: var(--paper);
+    padding: 0 20px;
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    color: var(--red);
+    text-transform: uppercase;
+  }
+
+  /* Section title */
+  .sec-title {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+  .sec-title .en {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 10px;
+    letter-spacing: 0.55em;
+    color: var(--red);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 16px;
+  }
+  .sec-title h3 {
+    font-size: 18px;
     font-weight: 300;
-    letter-spacing: 0.35em;
+    letter-spacing: 0.4em;
     color: var(--ink);
   }
   .sec-title .rule {
     width: 1px;
-    height: 40px;
+    height: 32px;
     background: var(--red);
-    margin: 32px auto 0;
+    margin: 24px auto 0;
     opacity: 0.5;
   }
 
-  /* Story — 手紙のような文章 */
-  .story-bg { background: var(--warm); }
+  /* Story */
+  .story {
+    margin-bottom: 100px;
+    padding: 60px 20px;
+    background: var(--warm);
+    position: relative;
+    z-index: 2;
+  }
   .story-body p {
-    font-size: 15.5px;
+    font-size: 13.5px;
     line-height: 2.6;
     color: var(--ink);
-    margin-bottom: 40px;
+    margin-bottom: 28px;
     letter-spacing: 0.12em;
     text-indent: 1em;
   }
   .story-body p.lead {
     text-align: center;
-    font-size: clamp(19px, 2.4vw, 26px);
+    font-size: 18px;
     color: var(--moss-deep);
-    line-height: 2.4;
-    margin-bottom: 80px;
+    line-height: 2.3;
+    margin-bottom: 60px;
     text-indent: 0;
     letter-spacing: 0.28em;
     font-weight: 300;
   }
   .story-sign {
     text-align: right;
-    margin-top: 60px;
-    font-size: 13px;
+    margin-top: 40px;
+    font-size: 12px;
     letter-spacing: 0.5em;
     color: var(--ink-soft);
   }
@@ -239,70 +287,73 @@
     display: block;
     font-family: "Cormorant Garamond", serif;
     font-style: italic;
-    font-size: 10px;
+    font-size: 9px;
     letter-spacing: 0.4em;
     color: var(--sub);
     margin-top: 8px;
     text-transform: uppercase;
   }
 
-  /* Quote 縦書き */
-  .quote-section {
-    padding: 240px 40px;
+  /* Quote */
+  .quote {
     text-align: center;
-    background: var(--base);
+    margin: 80px 0 100px;
+    position: relative;
+    z-index: 2;
   }
   .quote-mark {
     font-family: "Cormorant Garamond", serif;
     font-style: italic;
-    font-size: 64px;
+    font-size: 56px;
     line-height: 1;
     color: var(--red);
-    margin-bottom: 40px;
+    margin-bottom: 32px;
     display: block;
   }
   .quote-vertical {
     display: inline-block;
     writing-mode: vertical-rl;
     -webkit-writing-mode: vertical-rl;
-    font-size: clamp(19px, 2.2vw, 26px);
+    font-size: 18px;
     font-weight: 300;
     letter-spacing: 0.5em;
     line-height: 2.4;
     color: var(--ink);
     min-height: 320px;
+    padding: 20px 0;
   }
   .quote-attr {
+    margin-top: 40px;
     font-family: "Cormorant Garamond", serif;
     font-style: italic;
-    font-size: 10px;
+    font-size: 9px;
     letter-spacing: 0.5em;
     color: var(--sub);
-    margin-top: 60px;
     text-transform: uppercase;
   }
 
-  /* Scenes — 制作風景の非対称配置 */
-  .scenes-wrap { background: var(--paper); }
+  /* Scenes — 縦の流れの中に3枚 */
   .scenes {
+    margin-bottom: 100px;
+    position: relative;
+    z-index: 2;
+  }
+  .scenes-grid {
     display: grid;
     grid-template-columns: 1.6fr 1fr;
-    gap: 40px;
-    align-items: start;
-    max-width: 1100px;
-    margin: 0 auto;
+    gap: 12px;
+    margin: 40px 0;
   }
-  .scenes-col-right { display: flex; flex-direction: column; gap: 40px; padding-top: 100px; }
+  .scenes-col-right { display: flex; flex-direction: column; gap: 12px; padding-top: 60px; }
   .scene {
     position: relative;
     overflow: hidden;
-    background: var(--paper);
   }
   .scene::after {
     content: "";
     position: absolute;
     inset: 0;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/></filter><rect width='400' height='400' filter='url(%23n)' opacity='0.35'/></svg>");
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/></filter><rect width='400' height='400' filter='url(%23n)' opacity='0.35'/></svg>");
     mix-blend-mode: multiply;
     pointer-events: none;
   }
@@ -328,146 +379,151 @@
   }
   .scene .cap {
     position: absolute;
-    bottom: 16px;
-    left: 20px;
+    bottom: 10px;
+    left: 12px;
     font-family: "Cormorant Garamond", serif;
     font-style: italic;
-    font-size: 10px;
-    letter-spacing: 0.4em;
+    font-size: 8px;
+    letter-spacing: 0.35em;
     color: rgba(255,255,255,0.6);
     text-transform: uppercase;
     z-index: 3;
   }
   .scene-sub-a .cap { color: rgba(60,55,45,0.55); }
+  .scenes-note {
+    text-align: center;
+    color: var(--sub);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    margin-top: 40px;
+    line-height: 2.4;
+  }
 
   /* CTA */
   .cta {
-    padding: 260px 40px;
     text-align: center;
-    background: var(--base);
+    margin: 100px 0 80px;
+    position: relative;
+    z-index: 2;
   }
   .cta-en {
     font-family: "Cormorant Garamond", serif;
     font-style: italic;
-    font-size: 11px;
+    font-size: 10px;
     letter-spacing: 0.55em;
     color: var(--red);
     text-transform: uppercase;
-    margin-bottom: 32px;
+    margin-bottom: 28px;
   }
   .cta-jp {
-    font-size: clamp(20px, 2.6vw, 28px);
+    font-size: 18px;
     font-weight: 300;
-    letter-spacing: 0.35em;
+    letter-spacing: 0.32em;
     line-height: 2.1;
     color: var(--ink);
-    margin-bottom: 24px;
+    margin-bottom: 16px;
   }
   .cta-sub {
-    font-size: 12.5px;
+    font-size: 11.5px;
     color: var(--sub);
     letter-spacing: 0.2em;
     line-height: 2.2;
-    margin-bottom: 80px;
+    margin-bottom: 50px;
   }
   .cta-btn {
     display: inline-block;
-    padding: 20px 60px;
-    color: var(--base);
+    padding: 16px 44px;
+    color: var(--paper);
     background: var(--red);
-    font-size: 12px;
+    font-size: 11px;
     letter-spacing: 0.5em;
     border: 1px solid var(--red);
     transition: all 0.6s cubic-bezier(.2,.6,.2,1);
   }
-  .cta-btn:hover {
-    background: transparent;
-    color: var(--red);
-  }
+  .cta-btn:hover { background: transparent; color: var(--red); }
   .cta-caption {
-    margin-top: 32px;
+    margin-top: 24px;
     font-family: "Cormorant Garamond", serif;
     font-style: italic;
-    font-size: 10px;
+    font-size: 9px;
     letter-spacing: 0.45em;
     color: var(--sub);
     text-transform: lowercase;
   }
 
-  footer {
-    padding: 100px 40px 60px;
+  .foot {
     text-align: center;
-    border-top: 1px solid var(--line);
+    padding-top: 60px;
+    border-top: 1px solid var(--line-soft);
+    position: relative;
+    z-index: 2;
   }
   .foot-mark {
     width: 1px;
-    height: 40px;
+    height: 30px;
     background: var(--red);
-    margin: 0 auto 40px;
+    margin: 0 auto 32px;
     opacity: 0.5;
   }
-  footer .logo { display: inline-block; margin-bottom: 20px; }
-  footer .meta {
+  .foot .logo { display: inline-block; margin-bottom: 16px; }
+  .foot .meta {
     font-family: "Cormorant Garamond", serif;
     font-style: italic;
-    font-size: 10px;
+    font-size: 9px;
     letter-spacing: 0.5em;
     color: var(--sub);
     text-transform: uppercase;
   }
 
-  @media (max-width: 720px) {
-    header { padding: 20px 24px; }
-    .logo { font-size: 10px; letter-spacing: 0.4em; }
-    .hero { grid-template-columns: 1fr; padding-top: 80px; }
-    .hero-left { padding: 60px 24px 80px; }
-    .hero-right { aspect-ratio: 4 / 5; min-height: 0; }
-    section { padding: 140px 24px; }
-    .scenes { grid-template-columns: 1fr; }
+  @media (max-width: 680px) {
+    body { padding: 0; }
+    .canvas { padding: 40px 24px 60px; box-shadow: none; }
+    .canvas::before { display: none; }
+    .head { margin-bottom: 60px; padding-bottom: 24px; }
+    .story { padding: 40px 16px; }
+    .scenes-grid { grid-template-columns: 1fr; }
     .scenes-col-right { padding-top: 0; }
-    .quote-section { padding: 180px 24px; }
-    .cta { padding: 160px 24px; }
-    .cta-btn { padding: 18px 40px; letter-spacing: 0.4em; }
+    .quote { margin: 60px 0 80px; }
+    .cta { margin: 80px 0 60px; }
   }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="logo">
-    <span class="en">Ariyoshi Florist</span>
-    有吉花店
-  </div>
-  <div class="chapter">Story</div>
-</header>
+<div class="canvas">
 
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-left">
-    <div class="hero-left-inner">
+  <div class="head">
+    <div class="logo">
+      <span class="en">Ariyoshi Florist</span>
+      有吉花店
+    </div>
+    <div class="chapter-tag">B / Story</div>
+  </div>
+
+  <div class="hero">
+    <div class="portrait" id="hp">
+      <span class="letter">B</span>
+      <span class="stamp">— Portrait —</span>
+    </div>
+    <div class="hero-text">
       <div class="hero-en" id="he">— The Story —</div>
-      <h1 class="hero-jp" id="hj">花 は 、<br>言 葉 の 続 き だ 。</h1>
+      <h1 class="hero-jp" id="hj">花 は、<br>言 葉 の 続 き だ。</h1>
       <div class="hero-sig" id="hs">
         <div class="hero-sig-name">有 吉 隆 浩</div>
-        <div class="hero-sig-en">Takahiro Ariyoshi — Founder</div>
+        <div class="hero-sig-role">Takahiro Ariyoshi — Founder</div>
       </div>
     </div>
   </div>
-  <div class="hero-right">
-    <span class="letter-mark">B</span>
-    <span class="stamp">— Portrait —</span>
-  </div>
-</div>
 
-<!-- Story: 手紙 -->
-<section class="story-bg">
-  <div class="wrap-narrow">
-    <div class="sec-title reveal">
+  <div class="chapter-mark reveal"><span class="num">— i —</span></div>
+
+  <div class="story reveal">
+    <div class="sec-title">
       <span class="en">Our Origin</span>
-      <h2>創 業 の こ と</h2>
+      <h3>創 業 の こ と</h3>
       <div class="rule"></div>
     </div>
-    <div class="story-body reveal reveal-slow">
+    <div class="story-body">
       <p class="lead">
         伝えたい気持ちがあるとき、<br>
         人は最後、花を選ぶ。
@@ -478,65 +534,67 @@
       <p>
         私たちは、既製の花束を並べる店ではありません。ひとつの依頼ごとに、その場面と、贈り主の想いを一度預かってから、花を選び直します。花材の入荷、色の合わせ方、器の質感まで、すべてその一件のためだけに整えます。
       </p>
-      <p>
-        効率のよい仕事ではないと思います。それでも、この作り方でなければ届かない静けさがあります。私たちが十数年、店舗を持たずに続けてきた理由は、そこにあります。
-      </p>
       <div class="story-sign">
         有 吉 隆 浩
         <span class="en">Ariyoshi Florist</span>
       </div>
     </div>
   </div>
-</section>
 
-<!-- Quote 縦書き引用 -->
-<div class="quote-section reveal">
-  <span class="quote-mark">"</span>
-  <div class="quote-vertical">誰<br>が<br>作<br>っ<br>た<br>か︑<br>伝<br>わ<br>る<br>花<br>で<br>あ<br>り<br>た<br>い︒</div>
-  <div class="quote-attr">— Takahiro Ariyoshi —</div>
-</div>
+  <div class="chapter-mark reveal"><span class="num">— ii —</span></div>
 
-<!-- Scenes -->
-<section class="scenes-wrap">
-  <div class="sec-title reveal">
-    <span class="en">In the Studio</span>
-    <h2>制 作 の こ と</h2>
-    <div class="rule"></div>
+  <div class="quote reveal">
+    <span class="quote-mark">"</span>
+    <div class="quote-vertical">誰<br>が<br>作<br>っ<br>た<br>か︑<br>伝<br>わ<br>る<br>花<br>で<br>あ<br>り<br>た<br>い︒</div>
+    <div class="quote-attr">— Takahiro Ariyoshi —</div>
   </div>
-  <div class="scenes reveal reveal-slow">
-    <div class="scene scene-main"><span class="cap">At the Studio</span></div>
-    <div class="scenes-col-right">
-      <div class="scene scene-sub-a"><span class="cap">Selecting</span></div>
-      <div class="scene scene-sub-b"><span class="cap">Composing</span></div>
+
+  <div class="chapter-mark reveal"><span class="num">— iii —</span></div>
+
+  <div class="scenes reveal">
+    <div class="sec-title">
+      <span class="en">In the Studio</span>
+      <h3>制 作 の こ と</h3>
+      <div class="rule"></div>
     </div>
+    <div class="scenes-grid">
+      <div class="scene scene-main"><span class="cap">At the Studio</span></div>
+      <div class="scenes-col-right">
+        <div class="scene scene-sub-a"><span class="cap">Selecting</span></div>
+        <div class="scene scene-sub-b"><span class="cap">Composing</span></div>
+      </div>
+    </div>
+    <p class="scenes-note">
+      素 材 が 届 い た 朝 か ら、<br>
+      器 の か た ち を 決 め る 夕 方 ま で。
+    </p>
   </div>
-  <p style="text-align: center; color: var(--sub); font-size: 12.5px; letter-spacing: 0.2em; line-height: 2.4; margin-top: 100px;">
-    素 材 が 届 い た 朝 か ら、器 の か た ち を 決 め る 夕 方 ま で。
-  </p>
-</section>
 
-<!-- CTA -->
-<section class="cta reveal">
-  <div class="cta-en">— Talk with us —</div>
-  <div class="cta-jp">お 話 を、聞 か せ て く だ さ い 。</div>
-  <div class="cta-sub">贈りたい相手、届けたい場面。<br>ご相談は LINE より承ります。</div>
-  <a href="#" class="cta-btn">L I N E &nbsp; 登 録</a>
-  <div class="cta-caption">— talk with us —</div>
-</section>
+  <div class="chapter-mark reveal"><span class="num">— iv —</span></div>
 
-<footer>
-  <div class="foot-mark"></div>
-  <div class="logo">
-    <span class="en">Ariyoshi Florist</span>
-    有吉花店
+  <div class="cta reveal">
+    <div class="cta-en">— Talk with us —</div>
+    <div class="cta-jp">お 話 を、<br>聞 か せ て く だ さ い。</div>
+    <div class="cta-sub">贈りたい相手、届けたい場面。<br>ご相談は LINE より承ります。</div>
+    <a href="#" class="cta-btn">L I N E &nbsp; 登 録</a>
+    <div class="cta-caption">— talk with us —</div>
   </div>
-  <div class="meta">Hiroshima / Made to Order / 2026</div>
-</footer>
+
+  <div class="foot">
+    <div class="foot-mark"></div>
+    <div class="logo">
+      <span class="en">Ariyoshi Florist</span>
+      有吉花店
+    </div>
+    <div class="meta">Hiroshima / 2026</div>
+  </div>
+
+</div>
 
 <script>
   window.addEventListener('load', () => {
     requestAnimationFrame(() => {
-      ['he','hj','hs'].forEach(id => document.getElementById(id).classList.add('in'));
+      ['hp','he','hj','hs'].forEach(id => document.getElementById(id).classList.add('in'));
     });
   });
   const io = new IntersectionObserver((entries) => {
@@ -546,7 +604,7 @@
         io.unobserve(e.target);
       }
     });
-  }, { threshold: 0.12, rootMargin: '0px 0px -80px 0px' });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 </script>
 

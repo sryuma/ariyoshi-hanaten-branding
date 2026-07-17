@@ -10,13 +10,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Shippori+Mincho+B1:wght@200;300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
+    --outer: #E8E3D3;
+    --paper: #FCFAF5;
+    --paper-shade: #F5F1E5;
     --ink: #2A2622;
     --ink-soft: #57524A;
     --sub: #8F8578;
-    --line: #E5DFD1;
-    --line-soft: #EFEADB;
-    --base: #FCFAF5;
-    --paper: #F7F3E9;
+    --line: #D5CDB8;
+    --line-soft: #E5DFD1;
     --moss: #4A5A32;
     --moss-soft: #B8C0A5;
     --red: #6E1A20;
@@ -24,7 +25,7 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   body {
-    background: var(--base);
+    background: var(--outer);
     color: var(--ink);
     font-family: "Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", serif;
     font-weight: 300;
@@ -32,568 +33,584 @@
     letter-spacing: 0.14em;
     -webkit-font-smoothing: antialiased;
     text-rendering: geometricPrecision;
-    position: relative;
+    padding: 40px 20px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='400' height='400' filter='url(%23n)' opacity='0.10'/></svg>");
   }
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='400' height='400' filter='url(%23n)' opacity='0.06'/></svg>");
-    pointer-events: none;
-    z-index: 1;
-    mix-blend-mode: multiply;
-  }
-  body > * { position: relative; z-index: 2; }
   a { color: inherit; text-decoration: none; }
-  .en { font-family: "Cormorant Garamond", "Times New Roman", serif; font-style: italic; }
+  .en { font-family: "Cormorant Garamond", serif; font-style: italic; }
 
-  /* Reveal */
-  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 1.6s cubic-bezier(.2,.6,.2,1), transform 1.6s cubic-bezier(.2,.6,.2,1); }
+  /* Canvas — 1枚の紙 */
+  .canvas {
+    max-width: 620px;
+    margin: 0 auto;
+    background: var(--paper);
+    position: relative;
+    box-shadow:
+      0 2px 8px rgba(30,20,10,0.04),
+      0 20px 60px rgba(30,20,10,0.08),
+      0 60px 160px rgba(30,20,10,0.12);
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/></filter><rect width='400' height='400' filter='url(%23n)' opacity='0.06'/></svg>");
+    padding: 60px 60px 80px;
+    overflow: hidden;
+  }
+  /* 縦の細い罫線を紙の中央に通す */
+  .canvas::before {
+    content: "";
+    position: absolute;
+    top: 260px; bottom: 300px;
+    left: 50%;
+    width: 1px;
+    background: var(--line);
+    opacity: 0.5;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 1.8s cubic-bezier(.2,.6,.2,1), transform 1.8s cubic-bezier(.2,.6,.2,1); }
   .reveal.in { opacity: 1; transform: translateY(0); }
-  .reveal-slow { transition-duration: 2.4s; }
+  .reveal-slow { transition-duration: 2.6s; }
 
-  /* Header */
-  header {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    padding: 28px 40px;
+  /* Header — キャンバスの中に埋め込み */
+  .head {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    z-index: 100;
-    mix-blend-mode: multiply;
+    align-items: baseline;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--line-soft);
+    margin-bottom: 100px;
+    position: relative;
+    z-index: 2;
   }
-  .logo {
-    font-size: 11px;
-    letter-spacing: 0.5em;
-    font-weight: 400;
-    color: var(--ink);
-  }
+  .logo { font-size: 10px; letter-spacing: 0.5em; font-weight: 400; }
   .logo .en {
     display: block;
-    font-size: 10px;
-    letter-spacing: 0.35em;
+    font-size: 9px;
+    letter-spacing: 0.4em;
     color: var(--moss);
     margin-bottom: 4px;
     text-transform: uppercase;
     font-weight: 400;
   }
-  .chapter {
+  .chapter-tag {
     font-family: "Cormorant Garamond", serif;
     font-style: italic;
-    font-size: 11px;
+    font-size: 10px;
     letter-spacing: 0.5em;
     color: var(--sub);
     text-transform: uppercase;
   }
 
-  /* Hero — 何もない白紙 */
+  /* Hero — 大きな余白と一言 */
   .hero {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 160px 40px 120px;
     text-align: center;
+    margin-bottom: 160px;
+    position: relative;
+    z-index: 2;
   }
   .hero-mark {
     width: 1px;
-    height: 80px;
+    height: 60px;
     background: var(--moss);
-    margin-bottom: 60px;
+    margin: 0 auto 48px;
     opacity: 0;
     transform-origin: top;
     transform: scaleY(0);
-    transition: opacity 2s ease 0.4s, transform 2.4s cubic-bezier(.2,.6,.2,1) 0.4s;
+    transition: opacity 2s ease 0.3s, transform 2.2s cubic-bezier(.2,.6,.2,1) 0.3s;
   }
   .hero-mark.in { opacity: 0.6; transform: scaleY(1); }
   .hero-en {
     font-family: "Cormorant Garamond", serif;
     font-style: italic;
-    font-size: 11px;
-    letter-spacing: 0.6em;
+    font-size: 10px;
+    letter-spacing: 0.55em;
     color: var(--sub);
     text-transform: uppercase;
     margin-bottom: 48px;
     opacity: 0;
-    transition: opacity 2s ease 1.4s;
+    transition: opacity 2s ease 1s;
   }
   .hero-en.in { opacity: 1; }
   .hero-jp {
-    font-size: clamp(36px, 6vw, 68px);
+    font-size: clamp(28px, 5.5vw, 40px);
     font-weight: 200;
-    letter-spacing: 0.3em;
-    line-height: 1.9;
+    letter-spacing: 0.28em;
+    line-height: 2;
     color: var(--ink);
     opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 2.4s ease 2.2s, transform 2.4s cubic-bezier(.2,.6,.2,1) 2.2s;
+    transform: translateY(16px);
+    transition: opacity 2.4s ease 1.8s, transform 2.4s cubic-bezier(.2,.6,.2,1) 1.8s;
   }
   .hero-jp.in { opacity: 1; transform: translateY(0); }
   .hero-caption {
-    margin-top: 80px;
+    margin-top: 60px;
     font-size: 10px;
-    letter-spacing: 0.6em;
+    letter-spacing: 0.5em;
     color: var(--sub);
-    font-weight: 400;
     opacity: 0;
-    transition: opacity 2s ease 3.2s;
+    transition: opacity 2s ease 2.8s;
   }
   .hero-caption.in { opacity: 1; }
 
-  /* Sections */
-  section {
-    padding: 220px 40px;
-    position: relative;
-  }
-  .wrap {
-    max-width: 960px;
-    margin: 0 auto;
-  }
-  .wrap-narrow {
-    max-width: 620px;
-    margin: 0 auto;
-  }
-
-  /* Section: Vertical statement */
-  .verse {
+  /* 章立て */
+  .chapter-mark {
     text-align: center;
+    margin: 40px 0 80px;
+    position: relative;
+    z-index: 3;
   }
-  .verse-inner {
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .verse-vertical {
-    writing-mode: vertical-rl;
-    -webkit-writing-mode: vertical-rl;
-    font-size: clamp(20px, 2.6vw, 30px);
-    font-weight: 300;
-    letter-spacing: 0.5em;
-    line-height: 2.2;
-    color: var(--ink);
-    padding: 40px 0;
-    min-height: 400px;
-  }
-  .verse-note {
+  .chapter-mark .num {
+    display: inline-block;
+    background: var(--paper);
+    padding: 0 20px;
     font-family: "Cormorant Garamond", serif;
     font-style: italic;
     font-size: 11px;
     letter-spacing: 0.4em;
-    color: var(--sub);
-    margin-top: 60px;
+    color: var(--moss);
     text-transform: uppercase;
   }
 
-  /* Botanical accent SVG */
+  /* Verse — 縦書き詩 */
+  .verse {
+    text-align: center;
+    margin-bottom: 120px;
+    position: relative;
+    z-index: 2;
+  }
+  .verse-vertical {
+    display: inline-block;
+    writing-mode: vertical-rl;
+    -webkit-writing-mode: vertical-rl;
+    font-size: 18px;
+    font-weight: 300;
+    letter-spacing: 0.5em;
+    line-height: 2.4;
+    color: var(--ink);
+    min-height: 280px;
+    padding: 20px 0;
+  }
+  .verse-attr {
+    margin-top: 40px;
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 9px;
+    letter-spacing: 0.5em;
+    color: var(--sub);
+    text-transform: uppercase;
+  }
   .botanical {
     display: block;
-    margin: 0 auto;
-    width: 40px;
-    height: auto;
+    margin: 0 auto 40px;
+    width: 30px;
+    height: 120px;
     color: var(--moss);
     opacity: 0.5;
   }
 
-  /* Image blocks — 紙と墨の質感 */
+  /* Plate — 花の見立て */
   .plate {
     position: relative;
     overflow: hidden;
-    background: var(--paper);
+    margin: 0 auto 24px;
   }
-  .plate::before {
+  .plate::after {
     content: "";
     position: absolute;
     inset: 0;
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/></filter><rect width='400' height='400' filter='url(%23n)' opacity='0.35'/></svg>");
     mix-blend-mode: multiply;
-    opacity: 0.6;
+    pointer-events: none;
   }
-  .plate-moss {
+  .plate-main {
+    aspect-ratio: 3 / 4;
+    background:
+      radial-gradient(ellipse at 40% 30%, rgba(255,255,255,0.55) 0%, transparent 55%),
+      radial-gradient(ellipse at 70% 80%, rgba(60,50,30,0.15) 0%, transparent 55%),
+      linear-gradient(160deg, #EFE9DA 0%, #C8BFA6 100%);
+  }
+  .plate-caption {
+    text-align: center;
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 9px;
+    letter-spacing: 0.45em;
+    color: var(--sub);
+    text-transform: uppercase;
+    margin-bottom: 120px;
+  }
+
+  /* Craft — 3枚の非対称配置（縦の流れの中に） */
+  .craft {
+    margin-bottom: 120px;
+    position: relative;
+    z-index: 2;
+  }
+  .craft-title {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+  .craft-title .en {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 10px;
+    letter-spacing: 0.55em;
+    color: var(--sub);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 16px;
+  }
+  .craft-title h3 {
+    font-size: 18px;
+    font-weight: 300;
+    letter-spacing: 0.4em;
+    color: var(--ink);
+  }
+  .craft-title .rule {
+    width: 1px;
+    height: 32px;
+    background: var(--moss);
+    margin: 24px auto 0;
+    opacity: 0.5;
+  }
+  .craft-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    align-items: end;
+    margin: 60px 0 40px;
+  }
+  .craft-col { display: flex; flex-direction: column; gap: 12px; }
+  .craft-col:nth-child(1) { padding-top: 40px; }
+  .craft-col:nth-child(3) { padding-top: 20px; }
+  .cplate {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    position: relative;
+    overflow: hidden;
+  }
+  .cplate::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/></filter><rect width='400' height='400' filter='url(%23n)' opacity='0.35'/></svg>");
+    mix-blend-mode: multiply;
+    pointer-events: none;
+  }
+  .cplate-tall { aspect-ratio: 3 / 5; }
+  .cplate-paper {
+    background:
+      radial-gradient(ellipse at 40% 30%, rgba(255,255,255,0.55) 0%, transparent 55%),
+      linear-gradient(160deg, #EFE9DA 0%, #D5CDB8 100%);
+  }
+  .cplate-moss {
     background:
       radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.06) 0%, transparent 55%),
       radial-gradient(ellipse at 70% 80%, rgba(0,0,0,0.25) 0%, transparent 55%),
       linear-gradient(160deg, #5A6A3D 0%, #3F4B2A 100%);
   }
-  .plate-ink {
+  .cplate-ink {
     background:
       radial-gradient(ellipse at 25% 25%, rgba(255,255,255,0.05) 0%, transparent 55%),
       radial-gradient(ellipse at 75% 85%, rgba(0,0,0,0.30) 0%, transparent 55%),
       linear-gradient(160deg, #3A342C 0%, #1F1B15 100%);
   }
-  .plate-paper {
-    background:
-      radial-gradient(ellipse at 40% 30%, rgba(255,255,255,0.55) 0%, transparent 55%),
-      linear-gradient(160deg, #EFE9DA 0%, #D5CDB8 100%);
-  }
-  .plate .stamp {
+  .cplate .cap {
     position: absolute;
-    bottom: 20px;
-    left: 24px;
+    bottom: 10px;
+    left: 12px;
     font-family: "Cormorant Garamond", serif;
     font-style: italic;
-    font-size: 10px;
-    letter-spacing: 0.4em;
-    color: rgba(255,255,255,0.55);
+    font-size: 8px;
+    letter-spacing: 0.35em;
+    color: rgba(255,255,255,0.6);
     text-transform: uppercase;
     z-index: 2;
   }
-  .plate-paper .stamp { color: rgba(60,55,45,0.45); }
-
-  /* Craft — 3枚の非対称配置 */
-  .craft-grid {
+  .cplate-paper .cap { color: rgba(60,55,45,0.55); }
+  .craft-caps {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 20px;
-    align-items: end;
-  }
-  .craft-col { display: flex; flex-direction: column; gap: 24px; }
-  .craft-col:nth-child(1) { padding-top: 80px; }
-  .craft-col:nth-child(3) { padding-top: 40px; }
-  .craft-plate {
-    width: 100%;
-    aspect-ratio: 3 / 4;
-  }
-  .craft-plate-tall {
-    aspect-ratio: 3 / 5;
+    gap: 12px;
+    text-align: center;
+    margin-top: 8px;
   }
   .craft-cap {
     font-family: "Cormorant Garamond", serif;
     font-style: italic;
-    font-size: 10px;
-    letter-spacing: 0.45em;
+    font-size: 9px;
+    letter-spacing: 0.4em;
     color: var(--sub);
     text-transform: uppercase;
-    text-align: center;
-    margin-top: 8px;
   }
   .craft-cap span {
     display: block;
     font-family: "Shippori Mincho B1", serif;
     font-style: normal;
-    font-size: 13px;
+    font-size: 11px;
     letter-spacing: 0.3em;
     color: var(--ink-soft);
-    margin-top: 8px;
+    margin-top: 6px;
   }
-
-  /* Section header 極簡 */
-  .sec-title {
+  .craft-note {
     text-align: center;
-    margin-bottom: 120px;
-  }
-  .sec-title .en {
-    display: block;
-    font-size: 11px;
-    letter-spacing: 0.5em;
     color: var(--sub);
-    text-transform: uppercase;
-    margin-bottom: 20px;
-  }
-  .sec-title h2 {
-    font-size: clamp(22px, 2.6vw, 30px);
-    font-weight: 300;
-    letter-spacing: 0.35em;
-    color: var(--ink);
-  }
-  .sec-title .rule {
-    width: 1px;
-    height: 40px;
-    background: var(--moss);
-    margin: 32px auto 0;
-    opacity: 0.5;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    line-height: 2.4;
+    margin-top: 60px;
   }
 
-  /* Principles — 極小リスト */
+  /* Principles */
   .principles {
-    max-width: 480px;
-    margin: 0 auto;
+    margin: 0 auto 120px;
+    max-width: 380px;
+    position: relative;
+    z-index: 2;
   }
   .principle {
-    padding: 44px 0;
-    border-bottom: 1px solid var(--line);
+    padding: 32px 0;
+    border-bottom: 1px solid var(--line-soft);
     display: grid;
-    grid-template-columns: 50px 1fr;
-    gap: 32px;
+    grid-template-columns: 30px 1fr;
+    gap: 20px;
     align-items: baseline;
   }
   .principle:last-child { border-bottom: none; }
   .principle-num {
     font-family: "Cormorant Garamond", serif;
     font-style: italic;
-    font-size: 14px;
-    letter-spacing: 0.2em;
+    font-size: 13px;
     color: var(--moss);
+    letter-spacing: 0.15em;
   }
   .principle-body h4 {
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 400;
-    letter-spacing: 0.3em;
+    letter-spacing: 0.35em;
     color: var(--ink);
     margin-bottom: 8px;
   }
   .principle-body p {
-    font-size: 12.5px;
+    font-size: 11.5px;
     line-height: 2.1;
     color: var(--sub);
     letter-spacing: 0.1em;
   }
 
-  /* Quote — 引用の余韻 */
-  .quote-section {
-    padding: 260px 40px;
-    text-align: center;
-  }
-  .quote-vertical {
-    display: inline-block;
-    writing-mode: vertical-rl;
-    -webkit-writing-mode: vertical-rl;
-    font-size: clamp(18px, 2vw, 24px);
-    font-weight: 300;
-    letter-spacing: 0.5em;
-    line-height: 2.4;
-    color: var(--ink);
-    min-height: 320px;
-  }
-  .quote-attr {
-    font-family: "Cormorant Garamond", serif;
-    font-style: italic;
-    font-size: 10px;
-    letter-spacing: 0.5em;
-    color: var(--sub);
-    margin-top: 60px;
-    text-transform: uppercase;
-  }
-
-  /* CTA — ページの最下、控えめ */
+  /* CTA */
   .cta {
-    padding: 260px 40px;
     text-align: center;
-    background: var(--base);
+    margin: 120px 0 80px;
+    position: relative;
+    z-index: 2;
   }
   .cta-en {
     font-family: "Cormorant Garamond", serif;
     font-style: italic;
-    font-size: 11px;
+    font-size: 10px;
     letter-spacing: 0.55em;
     color: var(--sub);
     text-transform: uppercase;
-    margin-bottom: 32px;
+    margin-bottom: 28px;
   }
   .cta-jp {
-    font-size: clamp(20px, 2.6vw, 28px);
+    font-size: 18px;
     font-weight: 300;
-    letter-spacing: 0.35em;
+    letter-spacing: 0.32em;
     line-height: 2.1;
     color: var(--ink);
-    margin-bottom: 100px;
+    margin-bottom: 60px;
   }
   .cta-btn {
     display: inline-block;
-    padding: 20px 60px;
+    padding: 16px 44px;
     color: var(--ink);
-    font-size: 12px;
+    font-size: 11px;
     letter-spacing: 0.5em;
     border-bottom: 1px solid var(--ink);
     transition: all 0.6s cubic-bezier(.2,.6,.2,1);
-    position: relative;
   }
-  .cta-btn::after {
-    content: "";
-    position: absolute;
-    bottom: -1px; left: 0;
-    width: 0;
-    height: 1px;
-    background: var(--red);
-    transition: width 0.8s cubic-bezier(.2,.6,.2,1);
-  }
-  .cta-btn:hover { color: var(--red); border-bottom-color: transparent; }
-  .cta-btn:hover::after { width: 100%; }
+  .cta-btn:hover { color: var(--red); border-bottom-color: var(--red); }
   .cta-caption {
-    margin-top: 32px;
+    margin-top: 24px;
     font-family: "Cormorant Garamond", serif;
     font-style: italic;
-    font-size: 10px;
+    font-size: 9px;
     letter-spacing: 0.45em;
     color: var(--sub);
     text-transform: lowercase;
   }
 
-  /* Footer */
-  footer {
-    padding: 100px 40px 60px;
+  /* Foot */
+  .foot {
     text-align: center;
-    border-top: 1px solid var(--line);
+    padding-top: 60px;
+    border-top: 1px solid var(--line-soft);
+    position: relative;
+    z-index: 2;
   }
   .foot-mark {
     width: 1px;
-    height: 40px;
+    height: 30px;
     background: var(--moss);
-    margin: 0 auto 40px;
+    margin: 0 auto 32px;
     opacity: 0.5;
   }
-  footer .logo { display: inline-block; margin-bottom: 20px; }
-  footer .meta {
+  .foot .logo { display: inline-block; margin-bottom: 16px; }
+  .foot .meta {
     font-family: "Cormorant Garamond", serif;
     font-style: italic;
-    font-size: 10px;
+    font-size: 9px;
     letter-spacing: 0.5em;
     color: var(--sub);
     text-transform: uppercase;
   }
 
   /* Mobile */
-  @media (max-width: 720px) {
-    header { padding: 20px 24px; }
-    .logo { font-size: 10px; letter-spacing: 0.4em; }
-    .chapter { font-size: 10px; letter-spacing: 0.4em; }
-    section { padding: 140px 24px; }
-    .hero { padding: 120px 24px 80px; }
-    .verse-vertical { min-height: 320px; letter-spacing: 0.4em; }
-    .craft-grid { grid-template-columns: 1fr; gap: 40px; }
-    .craft-col:nth-child(1), .craft-col:nth-child(3) { padding-top: 0; }
-    .craft-plate, .craft-plate-tall { aspect-ratio: 4 / 5; }
-    .cta { padding: 160px 24px; }
-    .cta-btn { padding: 18px 40px; letter-spacing: 0.4em; }
-    .quote-section { padding: 180px 24px; }
-    .principle { grid-template-columns: 40px 1fr; gap: 20px; padding: 36px 0; }
+  @media (max-width: 680px) {
+    body { padding: 0; }
+    .canvas { padding: 40px 28px 60px; box-shadow: none; }
+    .canvas::before { display: none; }
+    .head { margin-bottom: 60px; padding-bottom: 24px; }
+    .hero { margin-bottom: 100px; }
+    .chapter-mark { margin: 20px 0 60px; }
+    .verse { margin-bottom: 80px; }
+    .plate-caption { margin-bottom: 80px; }
+    .craft { margin-bottom: 80px; }
+    .principles { margin-bottom: 80px; }
+    .cta { margin: 80px 0 60px; }
   }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="logo">
-    <span class="en">Ariyoshi Florist</span>
-    有吉花店
-  </div>
-  <div class="chapter">Silence</div>
-</header>
+<div class="canvas">
 
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-mark" id="hm"></div>
-  <div class="hero-en" id="he">Ariyoshi Florist — Est. 2013</div>
-  <h1 class="hero-jp" id="hj">花に、言葉を、添えない。</h1>
-  <div class="hero-caption" id="hc">Hiroshima — Made to Order</div>
-</div>
-
-<!-- Verse 1: 縦書き一節 -->
-<section>
-  <div class="wrap">
-    <div class="verse reveal">
-      <div class="verse-inner">
-        <svg class="botanical" viewBox="0 0 40 200" fill="none" stroke="currentColor" stroke-width="0.6" aria-hidden="true">
-          <path d="M20 200 L20 30" />
-          <path d="M20 60 C 27 58, 32 52, 34 45" />
-          <path d="M20 90 C 13 88, 8 82, 6 75" />
-          <path d="M20 120 C 27 118, 32 112, 34 105" />
-          <path d="M20 30 C 25 22, 24 14, 20 8 C 16 14, 15 22, 20 30 Z" />
-        </svg>
-        <div class="verse-vertical">花<br>は︑<br>水<br>を<br>含<br>み︑<br>光<br>を<br>待<br>つ︒</div>
-        <div class="verse-note">— Chapter I —</div>
-      </div>
+  <div class="head">
+    <div class="logo">
+      <span class="en">Ariyoshi Florist</span>
+      有吉花店
     </div>
+    <div class="chapter-tag">A / Silence</div>
   </div>
-</section>
 
-<!-- Craft: 手仕事の三景 -->
-<section style="background: var(--paper);">
-  <div class="wrap">
-    <div class="sec-title reveal">
-      <span class="en">Craft</span>
-      <h2>手 仕 事 の こ と</h2>
+  <div class="hero">
+    <div class="hero-mark" id="hm"></div>
+    <div class="hero-en" id="he">Ariyoshi Florist — Est. 2013</div>
+    <h1 class="hero-jp" id="hj">花 に、<br>言 葉 を、<br>添 え な い。</h1>
+    <div class="hero-caption" id="hc">Hiroshima — Made to Order</div>
+  </div>
+
+  <div class="chapter-mark reveal"><span class="num">— i —</span></div>
+
+  <div class="verse reveal">
+    <svg class="botanical" viewBox="0 0 40 200" fill="none" stroke="currentColor" stroke-width="0.6" aria-hidden="true">
+      <path d="M20 200 L20 30" />
+      <path d="M20 60 C 27 58, 32 52, 34 45" />
+      <path d="M20 90 C 13 88, 8 82, 6 75" />
+      <path d="M20 120 C 27 118, 32 112, 34 105" />
+      <path d="M20 30 C 25 22, 24 14, 20 8 C 16 14, 15 22, 20 30 Z" />
+    </svg>
+    <div class="verse-vertical">花<br>は︑<br>水<br>を<br>含<br>み︑<br>光<br>を<br>待<br>つ︒</div>
+    <div class="verse-attr">— Chapter I —</div>
+  </div>
+
+  <div class="chapter-mark reveal"><span class="num">— ii —</span></div>
+
+  <div class="reveal">
+    <div class="plate plate-main"></div>
+    <div class="plate-caption">— A Single Bloom —</div>
+  </div>
+
+  <div class="chapter-mark reveal"><span class="num">— iii —</span></div>
+
+  <div class="craft reveal">
+    <div class="craft-title">
+      <span class="en">The Craft</span>
+      <h3>手 仕 事 の こ と</h3>
       <div class="rule"></div>
     </div>
-    <div class="craft-grid reveal reveal-slow">
+    <div class="craft-grid">
       <div class="craft-col">
-        <div class="craft-plate plate plate-paper"><span class="stamp">Material</span></div>
-        <div class="craft-cap">i.<span>素 材</span></div>
+        <div class="cplate cplate-paper"><span class="cap">Material</span></div>
       </div>
       <div class="craft-col">
-        <div class="craft-plate craft-plate-tall plate plate-moss"><span class="stamp">Composition</span></div>
-        <div class="craft-cap">ii.<span>所 作</span></div>
+        <div class="cplate cplate-tall cplate-moss"><span class="cap">Composition</span></div>
       </div>
       <div class="craft-col">
-        <div class="craft-plate plate plate-ink"><span class="stamp">Vessel</span></div>
-        <div class="craft-cap">iii.<span>器</span></div>
+        <div class="cplate cplate-ink"><span class="cap">Vessel</span></div>
       </div>
     </div>
-    <p style="text-align: center; color: var(--sub); font-size: 12.5px; letter-spacing: 0.2em; line-height: 2.4; margin-top: 100px;">
-      素材が届いた朝から、器のかたちを決める夕方まで。<br>
-      一件ずつ、時間をかけて、時間を伝える。
+    <div class="craft-caps">
+      <div class="craft-cap">i.<span>素 材</span></div>
+      <div class="craft-cap">ii.<span>所 作</span></div>
+      <div class="craft-cap">iii.<span>器</span></div>
+    </div>
+    <p class="craft-note">
+      素 材 が 届 い た 朝 か ら、<br>
+      器 の か た ち を 決 め る 夕 方 ま で。
     </p>
   </div>
-</section>
 
-<!-- Quote 縦書き引用 -->
-<div class="quote-section">
-  <div class="reveal">
-    <div class="quote-vertical">見<br>送<br>る<br>一<br>本︑<br>迎<br>え<br>る<br>一<br>輪︒</div>
-    <div class="quote-attr">— from the Studio —</div>
+  <div class="chapter-mark reveal"><span class="num">— iv —</span></div>
+
+  <div class="verse reveal" style="margin-bottom: 100px;">
+    <div class="verse-vertical" style="font-size: 16px;">見<br>送<br>る<br>一<br>本︑<br>迎<br>え<br>る<br>一<br>輪︒</div>
+    <div class="verse-attr">— from the Studio —</div>
   </div>
+
+  <div class="chapter-mark reveal"><span class="num">— v —</span></div>
+
+  <div class="principles reveal">
+    <div class="principle">
+      <div class="principle-num">i.</div>
+      <div class="principle-body">
+        <h4>完 全 受 注 制</h4>
+        <p>お一人ずつ、ご依頼の場面に合わせて設計します。既製の花束は扱いません。</p>
+      </div>
+    </div>
+    <div class="principle">
+      <div class="principle-num">ii.</div>
+      <div class="principle-body">
+        <h4>店 舗 を 持 た な い</h4>
+        <p>広島を拠点に、東京・大阪を含む各地へ。花のためだけの時間を確保するために。</p>
+      </div>
+    </div>
+    <div class="principle">
+      <div class="principle-num">iii.</div>
+      <div class="principle-body">
+        <h4>言 葉 よ り、花 で。</h4>
+        <p>説明することよりも、届いたときの静けさを大切にしています。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="chapter-mark reveal"><span class="num">— vi —</span></div>
+
+  <div class="cta reveal">
+    <div class="cta-en">— A Quiet Word —</div>
+    <div class="cta-jp">まずは、ゆっくり<br>お 話 し く だ さ い。</div>
+    <a href="#" class="cta-btn">L I N E &nbsp; で &nbsp; 相 談 す る</a>
+    <div class="cta-caption">— quiet —</div>
+  </div>
+
+  <div class="foot">
+    <div class="foot-mark"></div>
+    <div class="logo">
+      <span class="en">Ariyoshi Florist</span>
+      有吉花店
+    </div>
+    <div class="meta">Hiroshima / 2026</div>
+  </div>
+
 </div>
 
-<!-- Principles -->
-<section>
-  <div class="wrap">
-    <div class="sec-title reveal">
-      <span class="en">Principles</span>
-      <h2>三 つ の 姿 勢</h2>
-      <div class="rule"></div>
-    </div>
-    <div class="principles reveal">
-      <div class="principle">
-        <div class="principle-num">i.</div>
-        <div class="principle-body">
-          <h4>完 全 受 注 制</h4>
-          <p>お一人ずつ、ご依頼の場面に合わせて設計します。既製の花束は扱いません。</p>
-        </div>
-      </div>
-      <div class="principle">
-        <div class="principle-num">ii.</div>
-        <div class="principle-body">
-          <h4>店 舗 を 持 た な い</h4>
-          <p>広島を拠点に、東京・大阪を含む各地へ。花のためだけの時間を確保するため、店舗運営は行いません。</p>
-        </div>
-      </div>
-      <div class="principle">
-        <div class="principle-num">iii.</div>
-        <div class="principle-body">
-          <h4>言 葉 よ り 、 花 で 。</h4>
-          <p>説明することよりも、届いたときの静けさを大切にしています。</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CTA -->
-<section class="cta reveal">
-  <div class="cta-en">— A Quiet Word —</div>
-  <div class="cta-jp">まずは、ゆっくりお話しください。</div>
-  <a href="#" class="cta-btn">L I N E &nbsp; で &nbsp; 相 談 す る</a>
-  <div class="cta-caption">— quiet —</div>
-</section>
-
-<footer>
-  <div class="foot-mark"></div>
-  <div class="logo">
-    <span class="en">Ariyoshi Florist</span>
-    有吉花店
-  </div>
-  <div class="meta">Hiroshima / Made to Order / 2026</div>
-</footer>
-
 <script>
-  // Hero cascade
   window.addEventListener('load', () => {
     requestAnimationFrame(() => {
       ['hm','he','hj','hc'].forEach(id => document.getElementById(id).classList.add('in'));
     });
   });
-  // Fade-in on scroll
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (e.isIntersecting) {
@@ -601,7 +618,7 @@
         io.unobserve(e.target);
       }
     });
-  }, { threshold: 0.12, rootMargin: '0px 0px -80px 0px' });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 </script>
 
