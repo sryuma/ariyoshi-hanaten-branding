@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>有吉花店 — 花は、言葉の続きだ。</title>
+<meta name="description" content="広島・完全受注制のフルオーダーフラワー。代表・有吉隆浩。">
+<style>
+  :root {
+    --moss: #5A6A3D;
+    --moss-deep: #3F4B2A;
+    --moss-soft: #E1E5D6;
+    --red: #7A1E26;
+    --red-soft: #F5EDEE;
+    --ink: #1A1A1A;
+    --sub: #6B6259;
+    --line: #E8E4DA;
+    --base: #FDFCF9;
+    --warm: #F8F4EC;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--base);
+    color: var(--ink);
+    font-family: "Hiragino Mincho ProN", "Yu Mincho", "游明朝", serif;
+    line-height: 1.95;
+    -webkit-font-smoothing: antialiased;
+    letter-spacing: 0.05em;
+  }
+  a { color: inherit; text-decoration: none; }
+  img { max-width: 100%; display: block; }
+
+  header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    padding: 20px 32px;
+    background: rgba(253,252,249,0.9);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--line);
+  }
+  .logo {
+    font-size: 15px;
+    letter-spacing: 6px;
+  }
+  .logo .en {
+    display: block;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: var(--moss);
+    text-transform: uppercase;
+    margin-bottom: 2px;
+    font-style: italic;
+  }
+  .nav-mini {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--red);
+    text-transform: uppercase;
+    font-style: italic;
+  }
+
+  /* Hero: 顔＋名前 */
+  .hero {
+    min-height: 100vh;
+    padding: 120px 32px 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .hero-portrait {
+    aspect-ratio: 4 / 5;
+    background: linear-gradient(160deg, var(--moss) 0%, var(--moss-deep) 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-portrait::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 40% 30%, rgba(255,255,255,0.12) 0%, transparent 45%),
+      radial-gradient(circle at 65% 75%, rgba(0,0,0,0.20) 0%, transparent 50%);
+  }
+  .hero-portrait .caption {
+    position: absolute;
+    bottom: 24px;
+    left: 24px;
+    color: rgba(255,255,255,0.75);
+    font-family: "Cormorant Garamond", serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    font-style: italic;
+  }
+  .hero-text .en {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 13px;
+    letter-spacing: 6px;
+    color: var(--red);
+    text-transform: uppercase;
+    font-style: italic;
+    margin-bottom: 32px;
+    display: block;
+  }
+  .hero-text h1 {
+    font-size: clamp(30px, 4.5vw, 48px);
+    font-weight: 400;
+    line-height: 1.7;
+    letter-spacing: 0.12em;
+    margin-bottom: 40px;
+  }
+  .hero-text .signature {
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    font-size: 14px;
+    color: var(--sub);
+    letter-spacing: 4px;
+  }
+  .hero-text .signature strong {
+    display: block;
+    font-size: 18px;
+    color: var(--ink);
+    letter-spacing: 6px;
+    font-weight: 400;
+    margin-bottom: 8px;
+  }
+
+  section {
+    padding: 140px 32px;
+  }
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  /* Section header */
+  .sec-head {
+    text-align: center;
+    margin-bottom: 80px;
+  }
+  .sec-head .en {
+    display: block;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 12px;
+    letter-spacing: 6px;
+    color: var(--red);
+    text-transform: uppercase;
+    font-style: italic;
+    margin-bottom: 16px;
+  }
+  .sec-head h2 {
+    font-size: clamp(24px, 3.5vw, 32px);
+    font-weight: 400;
+    letter-spacing: 0.15em;
+  }
+
+  /* Story */
+  .story {
+    background: var(--warm);
+  }
+  .story-body p {
+    font-size: 16px;
+    color: var(--ink);
+    line-height: 2.4;
+    margin-bottom: 32px;
+    letter-spacing: 0.08em;
+  }
+  .story-body p.lead {
+    font-size: 20px;
+    color: var(--moss-deep);
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  /* Quote */
+  .quote-block {
+    text-align: center;
+    padding: 100px 32px;
+    background: var(--base);
+  }
+  .quote-mark {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 80px;
+    color: var(--red);
+    line-height: 1;
+    margin-bottom: 20px;
+    font-style: italic;
+  }
+  .quote-text {
+    font-size: clamp(22px, 3vw, 30px);
+    font-weight: 400;
+    line-height: 2;
+    letter-spacing: 0.12em;
+    color: var(--ink);
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .quote-name {
+    margin-top: 40px;
+    font-size: 12px;
+    color: var(--sub);
+    letter-spacing: 6px;
+  }
+
+  /* Work scenes */
+  .work-scenes {
+    background: var(--warm);
+  }
+  .scenes-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 16px;
+    margin-top: 40px;
+    max-width: 1080px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .scene {
+    background: var(--moss);
+    position: relative;
+    overflow: hidden;
+    min-height: 240px;
+  }
+  .scene:nth-child(1) { grid-row: span 2; background: linear-gradient(150deg, var(--moss), var(--moss-deep)); }
+  .scene:nth-child(2) { background: linear-gradient(150deg, #7A8859, #5A6A3D); }
+  .scene:nth-child(3) { background: linear-gradient(150deg, #C5CDB0, #A8B489); }
+  .scene::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 30% 40%, rgba(255,255,255,0.10) 0%, transparent 45%);
+  }
+  .scene .caption {
+    position: absolute;
+    bottom: 16px;
+    left: 20px;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: rgba(255,255,255,0.7);
+    text-transform: uppercase;
+    font-style: italic;
+  }
+  .scene:nth-child(3) .caption { color: rgba(60,60,50,0.6); }
+
+  /* CTA */
+  .cta {
+    text-align: center;
+    padding: 180px 32px;
+    background: var(--base);
+  }
+  .cta h3 {
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    line-height: 1.9;
+    margin-bottom: 24px;
+  }
+  .cta .sub {
+    font-size: 14px;
+    color: var(--sub);
+    margin-bottom: 60px;
+    letter-spacing: 0.1em;
+  }
+  .cta-btn {
+    display: inline-block;
+    padding: 22px 60px;
+    background: var(--red);
+    color: var(--base);
+    letter-spacing: 6px;
+    font-size: 14px;
+    transition: all 0.4s ease;
+    border: 1px solid var(--red);
+  }
+  .cta-btn:hover {
+    background: transparent;
+    color: var(--red);
+  }
+  .cta-caption {
+    margin-top: 32px;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 11px;
+    letter-spacing: 5px;
+    color: var(--sub);
+    text-transform: lowercase;
+    font-style: italic;
+  }
+
+  footer {
+    padding: 60px 32px 40px;
+    border-top: 1px solid var(--line);
+    text-align: center;
+  }
+  footer .logo {
+    display: inline-block;
+    margin-bottom: 20px;
+  }
+  footer .meta {
+    font-size: 12px;
+    color: var(--sub);
+    letter-spacing: 3px;
+  }
+
+  @media (max-width: 720px) {
+    header { padding: 16px 20px; }
+    .logo { font-size: 13px; letter-spacing: 4px; }
+    .hero { grid-template-columns: 1fr; padding: 100px 20px 60px; gap: 40px; }
+    section { padding: 100px 20px; }
+    .scenes-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
+    .scene:nth-child(1) { grid-row: auto; }
+    .cta { padding: 120px 20px; }
+    .cta-btn { padding: 20px 40px; letter-spacing: 4px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <span class="en">Ariyoshi Florist</span>
+    有吉花店
+  </div>
+  <div class="nav-mini">Story</div>
+</header>
+
+<div class="hero">
+  <div class="hero-portrait">
+    <span class="caption">— Takahiro Ariyoshi —</span>
+  </div>
+  <div class="hero-text">
+    <span class="en">The Story</span>
+    <h1>花は、<br>言葉の続きだ。</h1>
+    <div class="signature">
+      <strong>有吉 隆浩</strong>
+      有吉花店 代表
+    </div>
+  </div>
+</div>
+
+<section class="story">
+  <div class="container">
+    <div class="sec-head">
+      <span class="en">Our Origin</span>
+      <h2>創業のこと</h2>
+    </div>
+    <div class="story-body">
+      <p class="lead">
+        伝えたい気持ちがあるとき、<br>
+        人は最後、花を選ぶ。
+      </p>
+      <p>
+        誰かに贈るとき、送るとき、迎えるとき。言葉が届かないと感じる瞬間に、人は花を選びます。だから花屋という仕事は、いちばん近くで、人の言葉にできない気持ちを受け取ることでもあります。
+      </p>
+      <p>
+        私たちは、既製の花束を並べる店ではありません。ひとつの依頼ごとに、その場面と、贈り主の想いを一度預かってから、花を選び直します。花材の入荷、色の合わせ方、器の質感まで、すべてその一件のためだけに整えます。
+      </p>
+      <p>
+        効率のよい仕事ではないと思っています。それでも、この作り方でなければ届かない静けさがあります。私たちが十数年、店舗を持たずに続けてきた理由は、そこにあります。
+      </p>
+    </div>
+  </div>
+</section>
+
+<div class="quote-block">
+  <div class="quote-mark">"</div>
+  <div class="quote-text">
+    誰が作ったか、<br>
+    伝わる花でありたい。
+  </div>
+  <div class="quote-name">— 有吉 隆浩</div>
+</div>
+
+<section class="work-scenes">
+  <div class="sec-head">
+    <span class="en">In the Studio</span>
+    <h2>制作のこと</h2>
+  </div>
+  <div class="scenes-grid">
+    <div class="scene"><span class="caption">At the Studio</span></div>
+    <div class="scene"><span class="caption">Selecting</span></div>
+    <div class="scene"><span class="caption">Composing</span></div>
+  </div>
+</section>
+
+<section class="cta">
+  <h3>まずは、<br>お話を聞かせてください。</h3>
+  <p class="sub">贈りたい相手、届けたい場面。<br>ご相談は LINE から承ります。</p>
+  <a href="#" class="cta-btn">LINE 登録</a>
+  <div class="cta-caption">— talk with us —</div>
+</section>
+
+<footer>
+  <div class="logo">
+    <span class="en">Ariyoshi Florist</span>
+    有吉花店
+  </div>
+  <div class="meta">広島 / 完全受注制 / 2026</div>
+</footer>
+
+</body>
+</html>

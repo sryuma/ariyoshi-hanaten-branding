@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>有吉花店 — 一年に、数える回数だけ。</title>
+<meta name="description" content="広島・完全受注制のフルオーダーフラワー。数量限定・予約制。">
+<style>
+  :root {
+    --moss: #5A6A3D;
+    --moss-deep: #3F4B2A;
+    --moss-soft: #E1E5D6;
+    --red: #7A1E26;
+    --red-deep: #521319;
+    --red-soft: #F5EDEE;
+    --ink: #1A1A1A;
+    --sub: #6B6259;
+    --line: #E8E4DA;
+    --base: #FDFCF9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--base);
+    color: var(--ink);
+    font-family: "Hiragino Mincho ProN", "Yu Mincho", "游明朝", serif;
+    line-height: 1.95;
+    -webkit-font-smoothing: antialiased;
+    letter-spacing: 0.05em;
+  }
+  a { color: inherit; text-decoration: none; }
+  img { max-width: 100%; display: block; }
+
+  header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    padding: 20px 32px;
+    background: rgba(253,252,249,0.9);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--line);
+  }
+  .logo {
+    font-size: 15px;
+    letter-spacing: 6px;
+  }
+  .logo .en {
+    display: block;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: var(--red);
+    text-transform: uppercase;
+    margin-bottom: 2px;
+    font-style: italic;
+  }
+  .nav-mini {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--red);
+    text-transform: uppercase;
+    font-style: italic;
+  }
+
+  /* Hero */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 120px 32px 60px;
+    position: relative;
+  }
+  .hero-inner {
+    max-width: 900px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+  .hero-visual {
+    aspect-ratio: 4 / 5;
+    background: linear-gradient(160deg, var(--red-deep) 0%, var(--red) 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-visual::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 40% 40%, rgba(255,255,255,0.10) 0%, transparent 45%),
+      radial-gradient(circle at 70% 80%, rgba(0,0,0,0.25) 0%, transparent 55%);
+  }
+  .hero-visual::after {
+    content: "";
+    position: absolute;
+    inset: 12px;
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+  .hero-visual .stamp {
+    position: absolute;
+    top: 28px;
+    right: 28px;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: rgba(255,255,255,0.75);
+    text-transform: uppercase;
+    font-style: italic;
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 6px 12px;
+  }
+  .hero-text .en {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 13px;
+    letter-spacing: 6px;
+    color: var(--red);
+    text-transform: uppercase;
+    font-style: italic;
+    margin-bottom: 32px;
+    display: block;
+  }
+  .hero-text h1 {
+    font-size: clamp(28px, 4.5vw, 44px);
+    font-weight: 400;
+    line-height: 1.8;
+    letter-spacing: 0.12em;
+    margin-bottom: 40px;
+  }
+  .hero-text .sub {
+    color: var(--sub);
+    font-size: 14px;
+    line-height: 2.2;
+    letter-spacing: 0.08em;
+  }
+
+  section {
+    padding: 140px 32px;
+  }
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .container-wide {
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+
+  .sec-head {
+    text-align: center;
+    margin-bottom: 80px;
+  }
+  .sec-head .en {
+    display: block;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 12px;
+    letter-spacing: 6px;
+    color: var(--red);
+    text-transform: uppercase;
+    font-style: italic;
+    margin-bottom: 16px;
+  }
+  .sec-head h2 {
+    font-size: clamp(24px, 3.5vw, 32px);
+    font-weight: 400;
+    letter-spacing: 0.15em;
+  }
+
+  /* Status */
+  .status {
+    background: #F8F6F1;
+  }
+  .status-card {
+    max-width: 640px;
+    margin: 0 auto;
+    border: 1px solid var(--line);
+    background: var(--base);
+    padding: 60px;
+  }
+  .status-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 20px;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--line);
+    align-items: baseline;
+  }
+  .status-row:last-child { border-bottom: none; }
+  .status-label {
+    font-size: 13px;
+    letter-spacing: 4px;
+    color: var(--sub);
+  }
+  .status-value {
+    font-size: 22px;
+    color: var(--red);
+    letter-spacing: 3px;
+    font-weight: 400;
+  }
+  .status-value .num {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 36px;
+    font-style: italic;
+    margin: 0 4px;
+    letter-spacing: 0;
+  }
+  .status-note {
+    text-align: center;
+    color: var(--sub);
+    font-size: 13px;
+    margin-top: 32px;
+    letter-spacing: 0.08em;
+  }
+
+  /* Why */
+  .why-body {
+    color: var(--ink);
+  }
+  .why-body p {
+    font-size: 16px;
+    line-height: 2.4;
+    margin-bottom: 28px;
+    letter-spacing: 0.08em;
+  }
+  .why-body p.lead {
+    text-align: center;
+    font-size: 22px;
+    color: var(--red);
+    margin-bottom: 60px;
+    line-height: 2;
+  }
+
+  /* Material palette */
+  .materials {
+    background: var(--base);
+    border-top: 1px solid var(--line);
+  }
+  .swatch-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .swatch {
+    aspect-ratio: 1 / 1;
+    position: relative;
+    overflow: hidden;
+  }
+  .swatch:nth-child(1) { background: linear-gradient(140deg, var(--moss), var(--moss-deep)); }
+  .swatch:nth-child(2) { background: linear-gradient(140deg, var(--red-deep), var(--red)); }
+  .swatch:nth-child(3) { background: linear-gradient(140deg, #C5CDB0, #A8B489); }
+  .swatch::after {
+    content: "";
+    position: absolute;
+    inset: 10px;
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+  .swatch .name {
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: rgba(255,255,255,0.75);
+    text-transform: uppercase;
+    font-style: italic;
+  }
+  .swatch:nth-child(3) .name { color: rgba(60,60,50,0.6); }
+  .materials-note {
+    text-align: center;
+    margin-top: 40px;
+    color: var(--sub);
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    line-height: 2.2;
+  }
+
+  /* CTA */
+  .cta {
+    background: var(--base);
+    text-align: center;
+    padding: 180px 32px;
+    position: relative;
+  }
+  .cta::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 1px;
+    background: var(--red);
+  }
+  .cta h3 {
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    line-height: 1.9;
+    margin-bottom: 24px;
+  }
+  .cta .sub {
+    font-size: 14px;
+    color: var(--sub);
+    margin-bottom: 60px;
+    letter-spacing: 0.1em;
+    line-height: 2;
+  }
+  .cta-btn {
+    display: inline-block;
+    padding: 22px 60px;
+    border: 1px solid var(--red);
+    color: var(--red);
+    letter-spacing: 6px;
+    font-size: 14px;
+    transition: all 0.4s ease;
+    background: transparent;
+  }
+  .cta-btn:hover {
+    background: var(--red);
+    color: var(--base);
+  }
+  .cta-caption {
+    margin-top: 32px;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 11px;
+    letter-spacing: 5px;
+    color: var(--sub);
+    text-transform: lowercase;
+    font-style: italic;
+  }
+
+  footer {
+    padding: 60px 32px 40px;
+    border-top: 1px solid var(--line);
+    text-align: center;
+  }
+  footer .logo {
+    display: inline-block;
+    margin-bottom: 20px;
+  }
+  footer .meta {
+    font-size: 12px;
+    color: var(--sub);
+    letter-spacing: 3px;
+  }
+
+  @media (max-width: 720px) {
+    header { padding: 16px 20px; }
+    .logo { font-size: 13px; letter-spacing: 4px; }
+    .hero { padding: 100px 20px 60px; }
+    .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+    section { padding: 100px 20px; }
+    .status-card { padding: 40px 24px; }
+    .swatch-grid { grid-template-columns: 1fr; gap: 16px; }
+    .cta { padding: 120px 20px; }
+    .cta-btn { padding: 20px 40px; letter-spacing: 4px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <span class="en">Ariyoshi Florist</span>
+    有吉花店
+  </div>
+  <div class="nav-mini">By Invitation</div>
+</header>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-visual">
+      <span class="stamp">Limited</span>
+    </div>
+    <div class="hero-text">
+      <span class="en">Made to Order</span>
+      <h1>一年に、<br>数える回数だけ。</h1>
+      <p class="sub">
+        すべての依頼を、一件ずつ整えるために。<br>
+        年間の受注数は、あらかじめ決まっています。
+      </p>
+    </div>
+  </div>
+</div>
+
+<section class="status">
+  <div class="container">
+    <div class="sec-head">
+      <span class="en">Current Availability</span>
+      <h2>今期の受付</h2>
+    </div>
+    <div class="status-card">
+      <div class="status-row">
+        <div class="status-label">今期 受付残</div>
+        <div class="status-value">残<span class="num">3</span>件</div>
+      </div>
+      <div class="status-row">
+        <div class="status-label">受付期間</div>
+        <div class="status-value">— 08.31</div>
+      </div>
+      <div class="status-row">
+        <div class="status-label">お引き渡し</div>
+        <div class="status-value">相談の上で</div>
+      </div>
+    </div>
+    <p class="status-note">
+      受注数量を絞ることで、一件ずつに時間をかけています。
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="sec-head">
+      <span class="en">Why Limited</span>
+      <h2>数を、絞る理由</h2>
+    </div>
+    <div class="why-body">
+      <p class="lead">
+        少なく作るためではなく、<br>
+        丁寧に届けるために。
+      </p>
+      <p>
+        花のためだけに使える時間が、そのまま仕上がりの深さになります。だから受注は絞っています。増やすことよりも、届けたときに残るものを大切にしたいからです。
+      </p>
+      <p>
+        ご相談いただいた場面と、贈られる方のことを、まず一度お預かりします。その上で、花材の入荷から色の合わせ方、器の質感まで、その一件のためだけに設計します。
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="materials">
+  <div class="container">
+    <div class="sec-head">
+      <span class="en">Season's Palette</span>
+      <h2>今期の花材</h2>
+    </div>
+    <div class="swatch-grid">
+      <div class="swatch"><span class="name">Moss</span></div>
+      <div class="swatch"><span class="name">Wine</span></div>
+      <div class="swatch"><span class="name">Linen</span></div>
+    </div>
+    <p class="materials-note">
+      季節ごとに、その時期にしかない色を選びます。<br>
+      詳細は、ご相談時にお伝えします。
+    </p>
+  </div>
+</section>
+
+<section class="cta">
+  <h3>今期のご相談を、<br>お待ちしております。</h3>
+  <p class="sub">
+    受付は LINE より承ります。<br>
+    ご相談の順に、順次ご案内いたします。
+  </p>
+  <a href="#" class="cta-btn">LINE で相談する</a>
+  <div class="cta-caption">— by invitation only —</div>
+</section>
+
+<footer>
+  <div class="logo">
+    <span class="en">Ariyoshi Florist</span>
+    有吉花店
+  </div>
+  <div class="meta">広島 / 完全受注制 / 2026</div>
+</footer>
+
+</body>
+</html>
