@@ -5,323 +5,406 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>有吉花店 — 一年に、数える回数だけ。</title>
 <meta name="description" content="広島・完全受注制のフルオーダーフラワー。数量限定・予約制。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Shippori+Mincho+B1:wght@200;300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --moss: #5A6A3D;
-    --moss-deep: #3F4B2A;
-    --moss-soft: #E1E5D6;
-    --red: #7A1E26;
-    --red-deep: #521319;
-    --red-soft: #F5EDEE;
-    --ink: #1A1A1A;
-    --sub: #6B6259;
-    --line: #E8E4DA;
-    --base: #FDFCF9;
+    --ink: #2A2622;
+    --ink-soft: #57524A;
+    --sub: #8F8578;
+    --line: #E5DFD1;
+    --line-soft: #EFEADB;
+    --base: #FCFAF5;
+    --paper: #F5F1E5;
+    --sumi: #1A1613;
+    --sumi-soft: #2E2620;
+    --red: #6E1A20;
+    --red-deep: #4A0F14;
+    --moss: #4A5A32;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   body {
     background: var(--base);
     color: var(--ink);
-    font-family: "Hiragino Mincho ProN", "Yu Mincho", "游明朝", serif;
-    line-height: 1.95;
+    font-family: "Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", serif;
+    font-weight: 300;
+    line-height: 2.2;
+    letter-spacing: 0.14em;
     -webkit-font-smoothing: antialiased;
-    letter-spacing: 0.05em;
+    text-rendering: geometricPrecision;
   }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='400' height='400' filter='url(%23n)' opacity='0.06'/></svg>");
+    pointer-events: none;
+    z-index: 1;
+    mix-blend-mode: multiply;
+  }
+  body > * { position: relative; z-index: 2; }
   a { color: inherit; text-decoration: none; }
-  img { max-width: 100%; display: block; }
+  .en { font-family: "Cormorant Garamond", serif; font-style: italic; }
+
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 1.8s cubic-bezier(.2,.6,.2,1), transform 1.8s cubic-bezier(.2,.6,.2,1); }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+  .reveal-slow { transition-duration: 2.6s; }
 
   header {
     position: fixed;
     top: 0; left: 0; right: 0;
-    padding: 20px 32px;
-    background: rgba(253,252,249,0.9);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    z-index: 100;
+    padding: 28px 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid var(--line);
+    z-index: 100;
+    transition: color 0.6s ease, background 0.4s ease;
   }
-  .logo {
-    font-size: 15px;
-    letter-spacing: 6px;
-  }
+  header.on-dark { color: var(--base); }
+  header.on-dark .logo { color: var(--base); }
+  header.on-dark .logo .en { color: rgba(255,255,255,0.7); }
+  header.on-dark .chapter { color: rgba(255,255,255,0.7); }
+  .logo { font-size: 11px; letter-spacing: 0.5em; font-weight: 400; color: var(--ink); transition: color 0.6s ease; }
   .logo .en {
     display: block;
-    font-family: "Cormorant Garamond", serif;
     font-size: 10px;
-    letter-spacing: 4px;
+    letter-spacing: 0.35em;
     color: var(--red);
+    margin-bottom: 4px;
     text-transform: uppercase;
-    margin-bottom: 2px;
-    font-style: italic;
+    font-weight: 400;
+    transition: color 0.6s ease;
   }
-  .nav-mini {
+  .chapter {
     font-family: "Cormorant Garamond", serif;
+    font-style: italic;
     font-size: 11px;
-    letter-spacing: 4px;
+    letter-spacing: 0.5em;
     color: var(--red);
     text-transform: uppercase;
-    font-style: italic;
+    transition: color 0.6s ease;
   }
 
-  /* Hero */
+  /* HERO — 墨のヒーロー、赤の印 */
   .hero {
     min-height: 100vh;
-    display: grid;
-    place-items: center;
-    padding: 120px 32px 60px;
+    background:
+      radial-gradient(ellipse at 30% 30%, rgba(255,255,255,0.03) 0%, transparent 55%),
+      radial-gradient(ellipse at 75% 85%, rgba(0,0,0,0.6) 0%, transparent 55%),
+      linear-gradient(160deg, #1A1613 0%, #0D0A08 100%);
+    color: var(--base);
     position: relative;
-  }
-  .hero-inner {
-    max-width: 900px;
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
-  }
-  .hero-visual {
-    aspect-ratio: 4 / 5;
-    background: linear-gradient(160deg, var(--red-deep) 0%, var(--red) 100%);
-    position: relative;
+    padding: 160px 40px 120px;
+    text-align: center;
     overflow: hidden;
   }
-  .hero-visual::before {
+  .hero::after {
     content: "";
     position: absolute;
     inset: 0;
-    background:
-      radial-gradient(circle at 40% 40%, rgba(255,255,255,0.10) 0%, transparent 45%),
-      radial-gradient(circle at 70% 80%, rgba(0,0,0,0.25) 0%, transparent 55%);
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/></filter><rect width='400' height='400' filter='url(%23n)' opacity='0.35'/></svg>");
+    mix-blend-mode: multiply;
+    pointer-events: none;
   }
-  .hero-visual::after {
-    content: "";
-    position: absolute;
-    inset: 12px;
-    border: 1px solid rgba(255,255,255,0.15);
-  }
-  .hero-visual .stamp {
-    position: absolute;
-    top: 28px;
-    right: 28px;
-    font-family: "Cormorant Garamond", serif;
-    font-size: 10px;
-    letter-spacing: 4px;
-    color: rgba(255,255,255,0.75);
-    text-transform: uppercase;
-    font-style: italic;
-    border: 1px solid rgba(255,255,255,0.3);
-    padding: 6px 12px;
-  }
-  .hero-text .en {
-    font-family: "Cormorant Garamond", serif;
-    font-size: 13px;
-    letter-spacing: 6px;
+  .hero > * { position: relative; z-index: 2; }
+  .hero-seal {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 76px;
+    height: 76px;
+    border: 1px solid var(--red);
     color: var(--red);
-    text-transform: uppercase;
+    font-family: "Cormorant Garamond", serif;
     font-style: italic;
-    margin-bottom: 32px;
-    display: block;
+    font-size: 11px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    margin-bottom: 60px;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 2s ease 0.4s, transform 2.2s cubic-bezier(.2,.6,.2,1) 0.4s;
   }
-  .hero-text h1 {
-    font-size: clamp(28px, 4.5vw, 44px);
-    font-weight: 400;
-    line-height: 1.8;
-    letter-spacing: 0.12em;
-    margin-bottom: 40px;
+  .hero-seal.in { opacity: 1; transform: scale(1); }
+  .hero-en {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 11px;
+    letter-spacing: 0.6em;
+    color: rgba(255,255,255,0.55);
+    text-transform: uppercase;
+    margin-bottom: 48px;
+    opacity: 0;
+    transition: opacity 2s ease 1.2s;
   }
-  .hero-text .sub {
-    color: var(--sub);
-    font-size: 14px;
+  .hero-en.in { opacity: 1; }
+  .hero-jp {
+    font-size: clamp(30px, 5vw, 56px);
+    font-weight: 200;
+    letter-spacing: 0.28em;
+    line-height: 2;
+    color: var(--base);
+    margin-bottom: 60px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 2.4s ease 2s, transform 2.4s cubic-bezier(.2,.6,.2,1) 2s;
+  }
+  .hero-jp.in { opacity: 1; transform: translateY(0); }
+  .hero-sub {
+    font-size: 12.5px;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0.2em;
     line-height: 2.2;
-    letter-spacing: 0.08em;
+    max-width: 480px;
+    opacity: 0;
+    transition: opacity 2s ease 3s;
   }
+  .hero-sub.in { opacity: 1; }
 
-  section {
-    padding: 140px 32px;
-  }
-  .container {
-    max-width: 720px;
-    margin: 0 auto;
-  }
-  .container-wide {
-    max-width: 1080px;
-    margin: 0 auto;
-  }
+  section { padding: 220px 40px; position: relative; }
+  .wrap { max-width: 960px; margin: 0 auto; }
+  .wrap-narrow { max-width: 620px; margin: 0 auto; }
 
-  .sec-head {
-    text-align: center;
-    margin-bottom: 80px;
-  }
-  .sec-head .en {
+  .sec-title { text-align: center; margin-bottom: 100px; }
+  .sec-title .en {
     display: block;
-    font-family: "Cormorant Garamond", serif;
-    font-size: 12px;
-    letter-spacing: 6px;
+    font-size: 11px;
+    letter-spacing: 0.5em;
     color: var(--red);
     text-transform: uppercase;
-    font-style: italic;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
   }
-  .sec-head h2 {
-    font-size: clamp(24px, 3.5vw, 32px);
-    font-weight: 400;
-    letter-spacing: 0.15em;
-  }
-
-  /* Status */
-  .status {
-    background: #F8F6F1;
-  }
-  .status-card {
-    max-width: 640px;
-    margin: 0 auto;
-    border: 1px solid var(--line);
-    background: var(--base);
-    padding: 60px;
-  }
-  .status-row {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 20px;
-    padding: 24px 0;
-    border-bottom: 1px solid var(--line);
-    align-items: baseline;
-  }
-  .status-row:last-child { border-bottom: none; }
-  .status-label {
-    font-size: 13px;
-    letter-spacing: 4px;
-    color: var(--sub);
-  }
-  .status-value {
-    font-size: 22px;
-    color: var(--red);
-    letter-spacing: 3px;
-    font-weight: 400;
-  }
-  .status-value .num {
-    font-family: "Cormorant Garamond", serif;
-    font-size: 36px;
-    font-style: italic;
-    margin: 0 4px;
-    letter-spacing: 0;
-  }
-  .status-note {
-    text-align: center;
-    color: var(--sub);
-    font-size: 13px;
-    margin-top: 32px;
-    letter-spacing: 0.08em;
-  }
-
-  /* Why */
-  .why-body {
+  .sec-title h2 {
+    font-size: clamp(22px, 2.6vw, 30px);
+    font-weight: 300;
+    letter-spacing: 0.35em;
     color: var(--ink);
   }
-  .why-body p {
+  .sec-title .rule {
+    width: 1px;
+    height: 40px;
+    background: var(--red);
+    margin: 32px auto 0;
+    opacity: 0.5;
+  }
+
+  /* Availability — 極簡 */
+  .avail {
+    max-width: 540px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 80px 60px;
+    border: 1px solid var(--line);
+    background: var(--base);
+    position: relative;
+  }
+  .avail::before {
+    content: "";
+    position: absolute;
+    top: -1px; left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 2px;
+    background: var(--red);
+  }
+  .avail-label {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 10px;
+    letter-spacing: 0.5em;
+    color: var(--sub);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+  }
+  .avail-count {
+    font-family: "Shippori Mincho B1", serif;
+    font-weight: 200;
+    font-size: clamp(80px, 12vw, 140px);
+    color: var(--red);
+    line-height: 1;
+    letter-spacing: 0.05em;
+    margin-bottom: 24px;
+  }
+  .avail-word {
+    font-size: 13px;
+    letter-spacing: 0.5em;
+    color: var(--ink-soft);
+    margin-bottom: 60px;
+  }
+  .avail-rows {
+    border-top: 1px solid var(--line);
+    padding-top: 32px;
+  }
+  .avail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 16px 0;
+    font-size: 13px;
+    letter-spacing: 0.2em;
+  }
+  .avail-row-label { color: var(--sub); }
+  .avail-row-value {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
     font-size: 16px;
-    line-height: 2.4;
-    margin-bottom: 28px;
-    letter-spacing: 0.08em;
+    color: var(--ink);
+    letter-spacing: 0.15em;
+  }
+  .avail-note {
+    text-align: center;
+    color: var(--sub);
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    margin-top: 60px;
+    line-height: 2.2;
+  }
+
+  /* Why — 数を絞る理由 */
+  .why-bg { background: var(--paper); }
+  .why-body p {
+    font-size: 15.5px;
+    line-height: 2.6;
+    color: var(--ink);
+    margin-bottom: 40px;
+    letter-spacing: 0.12em;
+    text-indent: 1em;
   }
   .why-body p.lead {
     text-align: center;
-    font-size: 22px;
+    font-size: clamp(19px, 2.4vw, 26px);
     color: var(--red);
-    margin-bottom: 60px;
-    line-height: 2;
+    line-height: 2.4;
+    margin-bottom: 80px;
+    text-indent: 0;
+    letter-spacing: 0.28em;
+    font-weight: 300;
   }
 
-  /* Material palette */
-  .materials {
-    background: var(--base);
-    border-top: 1px solid var(--line);
-  }
-  .swatch-grid {
+  /* Palette — 今期の花材 */
+  .palette-bg { background: var(--base); }
+  .palette {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 24px;
     max-width: 720px;
     margin: 0 auto;
   }
   .swatch {
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 3 / 4;
     position: relative;
     overflow: hidden;
   }
-  .swatch:nth-child(1) { background: linear-gradient(140deg, var(--moss), var(--moss-deep)); }
-  .swatch:nth-child(2) { background: linear-gradient(140deg, var(--red-deep), var(--red)); }
-  .swatch:nth-child(3) { background: linear-gradient(140deg, #C5CDB0, #A8B489); }
   .swatch::after {
     content: "";
     position: absolute;
-    inset: 10px;
-    border: 1px solid rgba(255,255,255,0.15);
+    inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/></filter><rect width='400' height='400' filter='url(%23n)' opacity='0.35'/></svg>");
+    mix-blend-mode: multiply;
+    pointer-events: none;
   }
+  .swatch:nth-child(1) { background: linear-gradient(160deg, #4A5A32 0%, #2F3A1E 100%); }
+  .swatch:nth-child(2) { background: linear-gradient(160deg, #4A0F14 0%, #1A0507 100%); }
+  .swatch:nth-child(3) { background: linear-gradient(160deg, #EFE9DA 0%, #C8BFA6 100%); }
   .swatch .name {
     position: absolute;
-    bottom: 16px;
-    left: 16px;
+    bottom: 18px;
+    left: 20px;
     font-family: "Cormorant Garamond", serif;
-    font-size: 10px;
-    letter-spacing: 3px;
-    color: rgba(255,255,255,0.75);
-    text-transform: uppercase;
     font-style: italic;
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    color: rgba(255,255,255,0.65);
+    text-transform: uppercase;
+    z-index: 2;
   }
-  .swatch:nth-child(3) .name { color: rgba(60,60,50,0.6); }
-  .materials-note {
+  .swatch .jp {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 11px;
+    letter-spacing: 0.5em;
+    color: rgba(255,255,255,0.55);
+    z-index: 2;
+    writing-mode: vertical-rl;
+    -webkit-writing-mode: vertical-rl;
+  }
+  .swatch:nth-child(3) .name { color: rgba(60,55,45,0.55); }
+  .swatch:nth-child(3) .jp { color: rgba(60,55,45,0.45); }
+  .palette-note {
     text-align: center;
-    margin-top: 40px;
     color: var(--sub);
-    font-size: 13px;
-    letter-spacing: 0.08em;
-    line-height: 2.2;
+    font-size: 12.5px;
+    letter-spacing: 0.2em;
+    margin-top: 80px;
+    line-height: 2.4;
   }
 
-  /* CTA */
+  /* CTA — 印章のような赤枠 */
   .cta {
-    background: var(--base);
+    padding: 260px 40px;
     text-align: center;
-    padding: 180px 32px;
+    background: var(--sumi);
+    color: var(--base);
     position: relative;
+    overflow: hidden;
   }
-  .cta::before {
+  .cta::after {
     content: "";
     position: absolute;
-    top: 0; left: 50%;
-    transform: translateX(-50%);
-    width: 60px;
-    height: 1px;
-    background: var(--red);
+    inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/></filter><rect width='400' height='400' filter='url(%23n)' opacity='0.3'/></svg>");
+    mix-blend-mode: multiply;
+    pointer-events: none;
   }
-  .cta h3 {
-    font-size: clamp(24px, 4vw, 36px);
-    font-weight: 400;
-    letter-spacing: 0.15em;
-    line-height: 1.9;
+  .cta > * { position: relative; z-index: 2; }
+  .cta-en {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 11px;
+    letter-spacing: 0.55em;
+    color: var(--red);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+  }
+  .cta-jp {
+    font-size: clamp(20px, 2.6vw, 28px);
+    font-weight: 300;
+    letter-spacing: 0.35em;
+    line-height: 2.1;
+    color: var(--base);
     margin-bottom: 24px;
   }
-  .cta .sub {
-    font-size: 14px;
-    color: var(--sub);
-    margin-bottom: 60px;
-    letter-spacing: 0.1em;
-    line-height: 2;
+  .cta-sub {
+    font-size: 12.5px;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0.2em;
+    line-height: 2.2;
+    margin-bottom: 80px;
   }
   .cta-btn {
     display: inline-block;
     padding: 22px 60px;
     border: 1px solid var(--red);
     color: var(--red);
-    letter-spacing: 6px;
-    font-size: 14px;
-    transition: all 0.4s ease;
+    font-size: 12px;
+    letter-spacing: 0.5em;
     background: transparent;
+    transition: all 0.6s cubic-bezier(.2,.6,.2,1);
+    position: relative;
+  }
+  .cta-btn::before {
+    content: "";
+    position: absolute;
+    inset: -6px;
+    border: 1px solid rgba(110,26,32,0.3);
+    pointer-events: none;
   }
   .cta-btn:hover {
     background: var(--red);
@@ -330,103 +413,112 @@
   .cta-caption {
     margin-top: 32px;
     font-family: "Cormorant Garamond", serif;
-    font-size: 11px;
-    letter-spacing: 5px;
-    color: var(--sub);
-    text-transform: lowercase;
     font-style: italic;
+    font-size: 10px;
+    letter-spacing: 0.45em;
+    color: rgba(255,255,255,0.5);
+    text-transform: lowercase;
   }
 
   footer {
-    padding: 60px 32px 40px;
-    border-top: 1px solid var(--line);
+    padding: 100px 40px 60px;
     text-align: center;
+    border-top: 1px solid var(--line);
+    background: var(--base);
   }
-  footer .logo {
-    display: inline-block;
-    margin-bottom: 20px;
+  .foot-mark {
+    width: 1px;
+    height: 40px;
+    background: var(--red);
+    margin: 0 auto 40px;
+    opacity: 0.5;
   }
+  footer .logo { display: inline-block; margin-bottom: 20px; }
   footer .meta {
-    font-size: 12px;
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 10px;
+    letter-spacing: 0.5em;
     color: var(--sub);
-    letter-spacing: 3px;
+    text-transform: uppercase;
   }
 
   @media (max-width: 720px) {
-    header { padding: 16px 20px; }
-    .logo { font-size: 13px; letter-spacing: 4px; }
-    .hero { padding: 100px 20px 60px; }
-    .hero-inner { grid-template-columns: 1fr; gap: 40px; }
-    section { padding: 100px 20px; }
-    .status-card { padding: 40px 24px; }
-    .swatch-grid { grid-template-columns: 1fr; gap: 16px; }
-    .cta { padding: 120px 20px; }
-    .cta-btn { padding: 20px 40px; letter-spacing: 4px; }
+    header { padding: 20px 24px; }
+    .logo { font-size: 10px; letter-spacing: 0.4em; }
+    .hero { padding: 120px 24px 80px; }
+    .hero-seal { width: 60px; height: 60px; font-size: 10px; }
+    section { padding: 140px 24px; }
+    .avail { padding: 60px 32px; }
+    .palette { grid-template-columns: 1fr; gap: 16px; }
+    .cta { padding: 160px 24px; }
+    .cta-btn { padding: 20px 40px; letter-spacing: 0.4em; }
   }
 </style>
 </head>
 <body>
 
-<header>
+<header id="hdr" class="on-dark">
   <div class="logo">
     <span class="en">Ariyoshi Florist</span>
     有吉花店
   </div>
-  <div class="nav-mini">By Invitation</div>
+  <div class="chapter">By Invitation</div>
 </header>
 
+<!-- HERO -->
 <div class="hero">
-  <div class="hero-inner">
-    <div class="hero-visual">
-      <span class="stamp">Limited</span>
-    </div>
-    <div class="hero-text">
-      <span class="en">Made to Order</span>
-      <h1>一年に、<br>数える回数だけ。</h1>
-      <p class="sub">
-        すべての依頼を、一件ずつ整えるために。<br>
-        年間の受注数は、あらかじめ決まっています。
-      </p>
-    </div>
-  </div>
+  <div class="hero-seal" id="hs">MMXXVI</div>
+  <div class="hero-en" id="he">— Made to Order —</div>
+  <h1 class="hero-jp" id="hj">一 年 に、<br>数 え る 回 数 だ け。</h1>
+  <p class="hero-sub" id="hb">
+    すべての依頼を、一件ずつ整えるために。<br>
+    年間の受注数は、あらかじめ決まっています。
+  </p>
 </div>
 
-<section class="status">
-  <div class="container">
-    <div class="sec-head">
+<!-- Availability -->
+<section>
+  <div class="wrap">
+    <div class="sec-title reveal">
       <span class="en">Current Availability</span>
-      <h2>今期の受付</h2>
+      <h2>今 期 の 受 付</h2>
+      <div class="rule"></div>
     </div>
-    <div class="status-card">
-      <div class="status-row">
-        <div class="status-label">今期 受付残</div>
-        <div class="status-value">残<span class="num">3</span>件</div>
-      </div>
-      <div class="status-row">
-        <div class="status-label">受付期間</div>
-        <div class="status-value">— 08.31</div>
-      </div>
-      <div class="status-row">
-        <div class="status-label">お引き渡し</div>
-        <div class="status-value">相談の上で</div>
+    <div class="avail reveal reveal-slow">
+      <div class="avail-label">This Season — Remaining</div>
+      <div class="avail-count">三</div>
+      <div class="avail-word">残 &nbsp; 三 &nbsp; 件</div>
+      <div class="avail-rows">
+        <div class="avail-row">
+          <span class="avail-row-label">受 付 期 間</span>
+          <span class="avail-row-value">— 08.31</span>
+        </div>
+        <div class="avail-row">
+          <span class="avail-row-label">お 引 き 渡 し</span>
+          <span class="avail-row-value">相 談 の 上 で</span>
+        </div>
       </div>
     </div>
-    <p class="status-note">
-      受注数量を絞ることで、一件ずつに時間をかけています。
+    <p class="avail-note">
+      受 注 数 量 を 絞 る こ と で 、<br>
+      一 件 ず つ に 時 間 を か け て い ま す 。
     </p>
   </div>
 </section>
 
-<section>
-  <div class="container">
-    <div class="sec-head">
+<!-- Why -->
+<section class="why-bg">
+  <div class="wrap-narrow">
+    <div class="sec-title reveal">
       <span class="en">Why Limited</span>
-      <h2>数を、絞る理由</h2>
+      <h2>数 を 、絞 る 理 由</h2>
+      <div class="rule"></div>
     </div>
-    <div class="why-body">
+    <div class="why-body reveal reveal-slow">
       <p class="lead">
-        少なく作るためではなく、<br>
-        丁寧に届けるために。
+        少 な く 作 る た め で は な く 、<br>
+        丁 寧 に 届 け る た め に 。
       </p>
       <p>
         花のためだけに使える時間が、そのまま仕上がりの深さになります。だから受注は絞っています。増やすことよりも、届けたときに残るものを大切にしたいからです。
@@ -438,41 +530,71 @@
   </div>
 </section>
 
-<section class="materials">
-  <div class="container">
-    <div class="sec-head">
+<!-- Palette -->
+<section class="palette-bg">
+  <div class="wrap">
+    <div class="sec-title reveal">
       <span class="en">Season's Palette</span>
-      <h2>今期の花材</h2>
+      <h2>今 期 の 花 材</h2>
+      <div class="rule"></div>
     </div>
-    <div class="swatch-grid">
-      <div class="swatch"><span class="name">Moss</span></div>
-      <div class="swatch"><span class="name">Wine</span></div>
-      <div class="swatch"><span class="name">Linen</span></div>
+    <div class="palette reveal reveal-slow">
+      <div class="swatch"><span class="jp">苔</span><span class="name">Moss</span></div>
+      <div class="swatch"><span class="jp">臙脂</span><span class="name">Wine</span></div>
+      <div class="swatch"><span class="jp">生成</span><span class="name">Linen</span></div>
     </div>
-    <p class="materials-note">
-      季節ごとに、その時期にしかない色を選びます。<br>
-      詳細は、ご相談時にお伝えします。
+    <p class="palette-note">
+      季 節 ご と に 、そ の 時 期 に し か な い 色 を 選 び ま す 。<br>
+      詳 細 は 、ご 相 談 時 に お 伝 え し ま す 。
     </p>
   </div>
 </section>
 
-<section class="cta">
-  <h3>今期のご相談を、<br>お待ちしております。</h3>
-  <p class="sub">
-    受付は LINE より承ります。<br>
-    ご相談の順に、順次ご案内いたします。
-  </p>
-  <a href="#" class="cta-btn">LINE で相談する</a>
+<!-- CTA -->
+<section class="cta reveal">
+  <div class="cta-en">— By Invitation Only —</div>
+  <div class="cta-jp">今 期 の ご 相 談 を 、<br>お 待 ち し て お り ま す 。</div>
+  <div class="cta-sub">受付は LINE より承ります。<br>ご相談の順に、順次ご案内いたします。</div>
+  <a href="#" class="cta-btn">L I N E &nbsp; で &nbsp; 相 談 す る</a>
   <div class="cta-caption">— by invitation only —</div>
 </section>
 
 <footer>
+  <div class="foot-mark"></div>
   <div class="logo">
     <span class="en">Ariyoshi Florist</span>
     有吉花店
   </div>
-  <div class="meta">広島 / 完全受注制 / 2026</div>
+  <div class="meta">Hiroshima / Made to Order / 2026</div>
 </footer>
+
+<script>
+  window.addEventListener('load', () => {
+    requestAnimationFrame(() => {
+      ['hs','he','hj','hb'].forEach(id => document.getElementById(id).classList.add('in'));
+    });
+  });
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -80px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Header contrast: dark on hero, then light
+  const hdr = document.getElementById('hdr');
+  const heroEl = document.querySelector('.hero');
+  const hIo = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) hdr.classList.add('on-dark');
+      else hdr.classList.remove('on-dark');
+    });
+  }, { threshold: 0.5 });
+  hIo.observe(heroEl);
+</script>
 
 </body>
 </html>
